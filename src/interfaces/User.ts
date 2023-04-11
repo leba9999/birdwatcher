@@ -8,6 +8,13 @@ interface User extends Document {
 }
 
 
+interface TokenUser {
+  id: string;
+  username: string;
+  email: string;
+  role: 'user' | 'admin';
+}
+
 interface OutputUser {
   id: string;
   username: string;
@@ -15,4 +22,4 @@ interface OutputUser {
   role?: 'user' | 'admin';
 }
 
-export {User, OutputUser};
+export {User, TokenUser, OutputUser};

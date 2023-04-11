@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response} from 'express';
 import userModel from '../models/userModel';
 import CustomError from '../../classes/CustomError';
-import {User, OutputUser} from '../../interfaces/User';
+import {User, OutputUser, TokenUser} from '../../interfaces/User';
 import bcrypt from 'bcryptjs';
 import DBMessageResponse from '../../interfaces/responses/DBMessageResponse';
 
@@ -64,15 +64,20 @@ const userPost = async (
 
 const userPut = async (
   req: Request<{}, {}, User>,
-  res: Response<{}, {user: OutputUser}>,
+  res: Response<{}, {user: TokenUser}>,
   next: NextFunction
 ) => {
   try {
     const userFromToken = res.locals.user;
 
+
     const user = req.body;
     if (user.password) {
       user.password = await bcrypt.hash(user.password, salt);
+    }
+    //check if user is not admin and is trying to change role
+    if(userFromToken.role !== 'admin'){
+      user.role = userFromToken.role;
     }
 
     const result = await userModel
