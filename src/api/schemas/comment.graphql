@@ -1,0 +1,10 @@
+
+scalar DateTime
+
+type Comment {
+    id: ID!
+    text: String!
+    user: User!
+    post: Post!
+    createdAt: DateTime!
+}

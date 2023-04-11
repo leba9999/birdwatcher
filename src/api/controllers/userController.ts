@@ -58,6 +58,8 @@ const userPost = async (
     };
     res.json(response);
   } catch (error) {
+
+    console.log(error);
     next(new CustomError('Duplicate entry', 200));
   }
 };
@@ -135,7 +137,7 @@ const userDelete = async (
 
 const userPutAsAdmin = async (
   req: Request<{}, {}, User>,
-  res: Response<{}, {user: OutputUser}>,
+  res: Response<{}, {user: TokenUser}>,
   next: NextFunction
 ) => {
   try {

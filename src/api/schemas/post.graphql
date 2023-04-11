@@ -1,0 +1,42 @@
+
+
+scalar DateTime
+
+type Post {
+    id: ID!
+    bird: Bird!
+    user: User!
+    created_at: DateTime!
+    spotted_at: DateTime
+    filename: String!
+    location: Location
+    description: String
+    title: String!
+}
+
+type Location {
+  type: GeoJSONPoint
+  coordinates: [Float]
+}
+
+input LocationInput {
+  type: GeoJSONPoint!
+  coordinates: [Float]!
+}
+
+enum GeoJSONPoint {
+  Point
+}
+
+type Query {
+    postById(id: ID!): Post
+    posts: [Post]
+    postsByBirds(birdId: ID!): [Post]
+    postsByUser(userId: ID!): [Post]
+}
+
+type Mutation {
+    createPost(birdId: ID! userId: ID! filename: String! location: LocationInput description: String title: String!): Post
+    updatePost(id: ID! birdId: ID! userId: ID! filename: String! location: LocationInput description: String title: String!): Post
+    deletePost(id: ID!): Post
+}
