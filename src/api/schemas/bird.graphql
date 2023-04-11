@@ -1,0 +1,45 @@
+
+
+scalar DateTime
+"""
+Type Bird is a representation of a post of bird which user has seen.
+"""
+type Bird {
+    id: ID!
+    bird_name: String!
+    species: Species
+    user: User
+    created_at: DateTime!
+    spotted_at: DateTime
+    filename: String
+    location: Location
+    description: String
+    title: String
+}
+
+type Location {
+  type: GeoJSONPoint
+  coordinates: [Float]
+}
+
+input LocationInput {
+  type: GeoJSONPoint!
+  coordinates: [Float]!
+}
+
+enum GeoJSONPoint {
+  Point
+}
+
+type Query {
+    birdById(id: ID!): Bird
+    birds: [Bird]
+    birdsBySpecies(speciesId: ID!): [Bird]
+    birdsByUser(userId: ID!): [Bird]
+}
+
+type Mutation {
+    createBird(bird_name: String!, speciesId: ID!, userId: ID!, spotted_at: DateTime, filename: String, location: LocationInput, description: String, title: String): Bird
+    updateBird(id: ID!, bird_name: String, speciesId: ID, userId: ID, spotted_at: DateTime, filename: String, location: LocationInput, description: String, title: String): Bird
+    deleteBird(id: ID!): Bird
+}
