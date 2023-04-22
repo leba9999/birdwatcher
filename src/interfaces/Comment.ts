@@ -5,7 +5,7 @@ import { User } from "./User";
 
 interface Comment extends Document {
     text: string;
-    user: Types.ObjectId | User;
+    owner: Types.ObjectId | User;
     post: Types.ObjectId | Post;
     createdAt: Date;
 }
