@@ -15,7 +15,7 @@ type Post {
 type Query {    
     postById(id: ID!): Post
     posts: [Post]
-    postsByUser(userId: ID!): [Post]
+    postsByOwner(userId: ID!): [Post]
 }
 
 type Mutation {

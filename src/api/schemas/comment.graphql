@@ -8,3 +8,16 @@ type Comment {
     post: Post!
     createdAt: DateTime!
 }
+
+type Query {
+    comments: [Comment!]!
+    commentById(id: ID!): Comment!
+    commentByOwner(owner: ID!): [Comment!]!
+    commentByPost(post: ID!): [Comment!]!
+}
+
+type Mutation {
+    createComment(text: String!, owner: ID!, post: ID!): Comment!
+    updateComment(id: ID!, text: String!): Comment!
+    deleteComment(id: ID!): Comment!
+}

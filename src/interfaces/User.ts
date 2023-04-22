@@ -16,8 +16,7 @@ interface User extends Document {
 
 interface TokenUser {
   id: string;
-  username: string;
-  email: string;
+  token: string;
   role: 'user' | 'admin';
 }
 
@@ -26,10 +25,10 @@ interface OutputUser {
   username: string;
   email: string;
   role?: 'user' | 'admin';
-  createdAt: Date;
-  likes: [Types.ObjectId | Post];
-  comments: [Types.ObjectId | Comment];
-  posts: [Types.ObjectId | Post];
+  createdAt?: Date;
+  likes?: [Types.ObjectId | Post];
+  comments?: [Types.ObjectId | Comment];
+  posts?: [Types.ObjectId | Post];
 }
 
 export {User, TokenUser, OutputUser};
