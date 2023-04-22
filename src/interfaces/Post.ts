@@ -1,16 +1,15 @@
 import {User} from './User';
 import {Types, Document} from 'mongoose';
-import {Point} from 'geojson';
-import { Bird } from "./Bird";
+import { Comment } from "./Comment";
 
 interface Post extends Document {
+    status: string;
     title: string;
     description: string;
-    user: Types.ObjectId | User;
+    likes: [Types.ObjectId | User];
+    comments: [Types.ObjectId | Comment]
+    owner: Types.ObjectId | User;
     createdAt: Date;
-    spottedAt: Date;
-    location: Point;
-    bird: Bird;
     filename: string;
 }
 

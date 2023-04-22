@@ -2,14 +2,27 @@ import mongoose from 'mongoose';
 import { Post } from '../../interfaces/Post';
 
 const postSchema = new mongoose.Schema<Post>({
+  status: {
+    type: String,
+    enum: ['found', 'unknown'],
+    default: 'unknown',
+    required: true,
+  },
   title: {
     type: String,
-    required: true,
   },
   description: {
     type: String,
   },
-  user: {
+  likes: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'User',
+  },
+  comments: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Comment',
+  }],
+  owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
@@ -17,25 +30,6 @@ const postSchema = new mongoose.Schema<Post>({
   createdAt: {
     type: Date,
     default: Date.now,
-    required: true,
-  },
-  spottedAt: {
-    type: Date,
-  },
-  location: {
-    type: {
-      type: String,
-      enum: ['Point'],
-      required: true,
-    },
-    coordinates: {
-      type: [Number],
-      required: true,
-    },
-  },
-  bird: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Bird',
     required: true,
   },
   filename: {
