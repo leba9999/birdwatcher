@@ -1,6 +1,10 @@
 type User {
   id: ID!
   username: String!
+  createdAt: String!
+  likes: [Post]
+  comments: [Comment]
+  posts: [Post]
 }
 
 type Query {

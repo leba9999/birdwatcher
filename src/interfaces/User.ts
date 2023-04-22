@@ -10,6 +10,7 @@ interface User extends Document {
   createdAt: Date;
   likes: [Types.ObjectId | Post];
   comments: [Types.ObjectId | Comment];
+  posts: [Types.ObjectId | Post];
 }
 
 
@@ -28,6 +29,7 @@ interface OutputUser {
   createdAt: Date;
   likes: [Types.ObjectId | Post];
   comments: [Types.ObjectId | Comment];
+  posts: [Types.ObjectId | Post];
 }
 
 export {User, TokenUser, OutputUser};
