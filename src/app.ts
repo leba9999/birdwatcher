@@ -12,12 +12,34 @@ import {
   ApolloServerPluginLandingPageProductionDefault,
 } from '@apollo/server/plugin/landingPage/default';
 import {notFound, errorHandler} from './middlewares';
+import {applyMiddleware} from 'graphql-middleware';
+import {makeExecutableSchema} from '@graphql-tools/schema';
+import {createRateLimitRule} from 'graphql-rate-limit';
+import {shield} from 'graphql-shield';
 
 const app = express();
 app.use(express.json());
 
 (async () => {
   try {
+    const rateLimitRule = createRateLimitRule({
+      identifyContext: (ctx) => ctx.id,
+    });
+
+    const permissions = shield({
+      Mutation: {
+        login: rateLimitRule({window: '1s', max: 10}),
+      },
+    });
+
+    const schema = applyMiddleware(
+      makeExecutableSchema({
+        typeDefs,
+        resolvers,
+      }),
+      permissions
+    );
+
     app.use(
       helmet({
         crossOriginEmbedderPolicy: false,
@@ -25,8 +47,8 @@ app.use(express.json());
       })
     );
     const server = new ApolloServer({
-      typeDefs,
-      resolvers,
+      schema,
+      introspection: true,
       plugins: [
         process.env.ENVIRONMENT === 'production'
           ? ApolloServerPluginLandingPageProductionDefault({
