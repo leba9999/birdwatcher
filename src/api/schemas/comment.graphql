@@ -20,4 +20,6 @@ type Mutation {
     createComment(text: String!, owner: ID!, post: ID!): Comment!
     updateComment(id: ID!, text: String!): Comment!
     deleteComment(id: ID!): Comment!
+    updateCommentAsAdmin(id: ID!, text: String!): Comment!
+    deleteCommentAsAdmin(id: ID!): Comment!
 }

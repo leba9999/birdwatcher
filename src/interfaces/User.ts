@@ -31,4 +31,16 @@ interface OutputUser {
   posts?: [Types.ObjectId | Post];
 }
 
-export {User, TokenUser, OutputUser};
+interface UserTest {
+  id?: string;
+  username?: string;
+  email?: string;
+  password?: string;
+  role?: 'user' | 'admin';
+  createdAt?: Date;
+  likes?: [Types.ObjectId | Post];
+  comments?: [Types.ObjectId | Comment];
+  posts?: [Types.ObjectId | Post];
+}
+
+export {User, TokenUser, OutputUser, UserTest};

@@ -5,8 +5,6 @@ import {User, OutputUser, TokenUser} from '../../interfaces/User';
 import bcrypt from 'bcryptjs';
 import DBMessageResponse from '../../interfaces/responses/DBMessageResponse';
 
-const salt = bcrypt.genSaltSync(12);
-
 const check = (req: Request, res: Response) => {
   res.json({message: 'I am alive'});
 };
@@ -46,7 +44,7 @@ const userPost = async (
 ) => {
   try {
     const user = req.body;
-    user.password = await bcrypt.hash(user.password, salt);
+    user.password = await bcrypt.hashSync(user.password, 10);
     const newUser = await userModel.create(user);
     const response: DBMessageResponse = {
       message: 'user created',
@@ -75,7 +73,7 @@ const userPut = async (
 
     const user = req.body;
     if (user.password) {
-      user.password = await bcrypt.hash(user.password, salt);
+      user.password = await bcrypt.hashSync(user.password, 10);
     }
     //check if user is not admin and is trying to change role
     if(userFromToken.role !== 'admin'){
@@ -147,7 +145,7 @@ const userPutAsAdmin = async (
     }
     const user = req.body;
     if (user.password) {
-      user.password = await bcrypt.hash(user.password, salt);
+      user.password = await bcrypt.hashSync(user.password, 10);
     }
 
     const result = await userModel

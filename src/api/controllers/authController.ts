@@ -7,13 +7,13 @@ import LoginMessageResponse from '../../interfaces/responses/LoginMessageRespons
 import {OutputUser} from '../../interfaces/User';
 
 const login = async (
-  req: Request<{}, {}, {email: string; password: string}>,
+  req: Request<{}, {}, {username: string; password: string}>,
   res: Response,
   next: NextFunction
 ) => {
-  const {email, password} = req.body;
+  const {username, password} = req.body;
   try {
-    const user = await userModel.findOne({email: email});
+    const user = await userModel.findOne({username: username});
     if (!user) {
       next(new CustomError('Incorrect username/password', 200));
       return;

@@ -15,9 +15,12 @@ import {notFound, errorHandler} from './middlewares';
 import {applyMiddleware} from 'graphql-middleware';
 import {makeExecutableSchema} from '@graphql-tools/schema';
 import {createRateLimitRule} from 'graphql-rate-limit';
-import {shield} from 'graphql-shield';
+import {allow, shield} from 'graphql-shield';
+import authenticate from './api/functions/authenticate';
+import { MyContext } from './interfaces/MyContext';
 
 const app = express();
+app.use(cors<cors.CorsRequest>());
 app.use(express.json());
 
 (async () => {
@@ -29,7 +32,11 @@ app.use(express.json());
     const permissions = shield({
       Mutation: {
         login: rateLimitRule({window: '1s', max: 10}),
+        register: rateLimitRule({window: '1s', max: 3}),
       },
+    },
+    {
+      allowExternalErrors: true
     });
 
     const schema = applyMiddleware(
@@ -46,26 +53,27 @@ app.use(express.json());
         contentSecurityPolicy: false,
       })
     );
-    const server = new ApolloServer({
+    const server = new ApolloServer<MyContext>({
       schema,
       introspection: true,
       plugins: [
-        process.env.ENVIRONMENT === 'production'
+        process.env.NODE_ENV === 'production'
           ? ApolloServerPluginLandingPageProductionDefault({
-              graphRef: 'my-graph-id@my-graph-variant',
-              footer: false,
+              embed: true as false,
             })
-          : ApolloServerPluginLandingPageLocalDefault({footer: false}),
+          : ApolloServerPluginLandingPageLocalDefault(),
       ],
-      includeStacktraceInErrorResponses: false,
+      includeStacktraceInErrorResponses: true,
     });
     await server.start();
 
     app.use(
       '/graphql',
-      cors<cors.CorsRequest>(),
       express.json(),
-      expressMiddleware(server)
+      cors<cors.CorsRequest>(),
+      expressMiddleware(server, {
+        context: async ({req}) => authenticate(req),
+      })
     );
 
     app.use('/api/v1', api);

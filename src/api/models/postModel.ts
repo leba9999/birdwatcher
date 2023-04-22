@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { Post } from '../../interfaces/Post';
 
-const postSchema = new mongoose.Schema<Post>({
+const postModel = new mongoose.Schema<Post>({
   status: {
     type: String,
     enum: ['found', 'unknown'],
@@ -37,4 +37,13 @@ const postSchema = new mongoose.Schema<Post>({
   },
 });
 
-export default mongoose.model<Post>('Post', postSchema);
+// Duplicate the ID field.
+postModel.virtual('id').get(function () {
+  return this._id.toHexString();
+});
+
+// Ensure virtual fields are serialised.
+postModel.set('toJSON', {
+  virtuals: true,
+});
+export default mongoose.model<Post>('Post', postModel);
