@@ -59,4 +59,34 @@ const loginBrute = (
       });
   });
 };
-export { getNotFound, loginBrute };
+const loginBruteExpress = (
+  url: string | Function,
+  user: UserTest
+): Promise<boolean> => {
+  return new Promise((resolve, reject) => {
+    request(url)
+      .post("/api/v1/auth/login")
+      .set("Content-type", "application/json")
+      .send({
+        username: user.username,
+        password: user.password,
+      })
+      .expect(200, (err, response) => {
+        console.log("response", response.text);
+        if (err) {
+          reject(err);
+        } else {
+          if (
+            response.body.errors?.[0]?.message ===
+            "You are trying to access 'login' too often"
+          ) {
+            console.log("brute blocked", response.body.errors[0].message);
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        }
+      });
+  });
+};
+export { getNotFound, loginBrute, loginBruteExpress };

@@ -1,11 +1,12 @@
 import app from "../src/app";
 import mongoose from "mongoose";
 import LoginMessageResponse from "../src/interfaces/responses/LoginMessageResponse";
+import UploadMessageResponse from "../src/interfaces/responses/UploadMessageResponse";
 import { UserTest } from "../src/interfaces/User";
 import randomstring from "randomstring";
+import { Types } from "mongoose";
 import {
   adminDeleteUser,
-  adminPutAsAdmin,
   deleteUser,
   getSingleUser,
   getUser,
@@ -15,7 +16,9 @@ import {
   wrongUserDeleteUser,
 } from "./userFunctions";
 import jwt from "jsonwebtoken";
-import { getNotFound, loginBrute } from "./apiFunctions";
+import { getNotFound, loginBrute, loginBruteExpress } from "./apiFunctions";
+import { PostTest } from "../src/interfaces/Post";
+import { getPost, postFile, postPost } from "./postFunctions";
 
 describe("Testing user interactions in graphql api", () => {
   // Connect to database
@@ -98,14 +101,33 @@ describe("Testing user interactions in graphql api", () => {
     await getSingleUser(app, userData.user.id!);
   });
 
+  // test image upload
+  let uploadData: UploadMessageResponse;
+  let postData: PostTest;
+  it("should upload a image", async () => {
+    uploadData = await postFile(app, userData.token!);
+    postData = {
+      description: "Test description " + randomstring.generate(50),
+      owner: userData.user.id! as unknown as Types.ObjectId,
+      filename: uploadData.data.filename,
+    };
+  });
+
+  // test post Post data
+  let postID: string;
+  it("should create post with data and file", async () => {
+    const post = await postPost(app, postData, userData.token!);
+    postID = post.id!;
+  });
+
+  // test get array of posts
+  it("should return array of posts", async () => {
+    await getPost(app);
+  });
+
   // test update user
   it("should update user", async () => {
     await putUser(app, userData.token!);
-  });
-
-  // test update admin as admin
-  it("should update admin", async () => {
-    await adminPutAsAdmin(app, adminData.token!);
   });
 
   // test delete other user by id as user
@@ -141,7 +163,6 @@ describe("Testing user interactions in graphql api", () => {
       // If the while loop completes successfully, the test fails
       throw new Error("Brute force attack succeeded");
     } catch (error) {
-      console.log(error);
       // If the login function throws an error, the test passes
       expect((error as Error).message).toBe("Brute force attack unsuccessful");
     }

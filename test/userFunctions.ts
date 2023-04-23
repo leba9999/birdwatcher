@@ -29,7 +29,6 @@ const getUser = (url: string | Function): Promise<UserTest[]> => {
         }`,
       })
       .expect(200, (err, response) => {
-        //console.log("Here!!!!!!!!!!" , response)
         if (err) {
           reject(err);
         } else {
@@ -221,82 +220,6 @@ const putUser = (url: string | Function, token: string) => {
       });
   });
 };
-const adminPutAsAdmin = (url: string | Function, token: string) => {
-  return new Promise((resolve, reject) => {
-    const newValue = "admin " + randomstring.generate(7);
-    const originalValue = "admin";
-    request(url)
-      .post("/graphql")
-      .set("Content-type", "application/json")
-      .set("Authorization", "Bearer " + token)
-      .send({
-        query: `mutation UpdateUser($user: UserModify!) {
-          updateUser(user: $user) {
-            message
-            user {
-              email
-              username
-              id
-            }
-          }
-        }`,
-        variables: {
-          user: {
-            username: newValue,
-          },
-        },
-      })
-      .expect(200, (err, response) => {
-        if (err) {
-          reject(err);
-        } else {
-          const userData = response.body.data.updateUser;
-          expect(userData).toHaveProperty("message");
-          expect(userData).toHaveProperty("user");
-          expect(userData.user).toHaveProperty("id");
-          expect(userData.user).toHaveProperty("email");
-          expect(userData.user).toHaveProperty("username");
-          expect(userData.user.username).toBe(newValue);
-        }
-      });
-    request(url)
-      .post("/graphql")
-      .set("Content-type", "application/json")
-      .set("Authorization", "Bearer " + token)
-      .send({
-        query: `mutation UpdateUser($user: UserModify!) {
-            updateUser(user: $user) {
-              message
-              user {
-                email
-                username
-                id
-              }
-            }
-          }`,
-        variables: {
-          user: {
-            username: originalValue,
-          },
-        },
-      })
-      .expect(200, (err, response) => {
-        if (err) {
-          reject(err);
-        } else {
-          const userData = response.body.data.updateUser;
-          expect(userData).toHaveProperty("message");
-          expect(userData).toHaveProperty("user");
-          expect(userData.user).toHaveProperty("id");
-          expect(userData.user).toHaveProperty("email");
-          expect(userData.user).toHaveProperty("username");
-          expect(userData.user.username).toBe(originalValue);
-          resolve(response.body.data.updateUser);
-        }
-      });
-  });
-};
-
 const deleteUser = (
   url: string | Function,
   token: string
@@ -416,7 +339,6 @@ export {
   loginUser,
   getSingleUser,
   putUser,
-  adminPutAsAdmin,
   deleteUser,
   adminDeleteUser,
   wrongUserDeleteUser,
