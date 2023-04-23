@@ -20,6 +20,11 @@ type TokenMessage {
   user: OutputUser!
 }
 
+type UserMessage {
+  message: String!
+  user: OutputUser!
+}
+
 input Credentials {
   username: String!
   password: String!
@@ -47,9 +52,9 @@ type Query {
 
 type Mutation {
   login(credentials: Credentials!): TokenMessage
-  register(user: UserInput!): TokenMessage
-  updateUser(user: UserModify!): TokenMessage
-  deleteUser: TokenMessage
-  updateUserAsAdmin(user: UserModify!, id: ID!): TokenMessage
-  deleteUserAsAdmin(id: ID!): TokenMessage
+  register(user: UserInput!): UserMessage
+  updateUser(user: UserModify!): UserMessage
+  deleteUser: UserMessage
+  updateUserAsAdmin(user: UserModify!, id: ID!): UserMessage
+  deleteUserAsAdmin(id: ID!): UserMessage
 }
