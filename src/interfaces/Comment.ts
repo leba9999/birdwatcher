@@ -1,13 +1,19 @@
-
-import {Types, Document} from 'mongoose';
+import { Types, Document } from "mongoose";
 import { Post } from "./Post";
 import { User } from "./User";
 
 interface Comment extends Document {
-    text: string;
-    owner: Types.ObjectId | User;
-    post: Types.ObjectId | Post;
-    createdAt: Date;
+  text: string;
+  owner: Types.ObjectId | User;
+  post: Types.ObjectId | Post;
+  createdAt: Date;
+}
+interface CommentTest {
+  id?: string;
+  text?: string;
+  owner?: Types.ObjectId | User;
+  post?: Types.ObjectId | Post;
+  createdAt?: Date;
 }
 
-export { Comment };
+export { Comment, CommentTest };

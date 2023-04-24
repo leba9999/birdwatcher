@@ -17,9 +17,6 @@ const getPost = (url: string | Function): Promise<PostTest[]> => {
               likes {
                 id
               }
-              comments {
-                id
-              }
               owner {
                 id
               }
@@ -33,18 +30,65 @@ const getPost = (url: string | Function): Promise<PostTest[]> => {
           reject(err);
         } else {
           const posts = response.body.data.posts;
-          console.log(response.body);
           expect(posts).toBeInstanceOf(Array);
           expect(posts[0]).toHaveProperty("id");
           expect(posts[0]).toHaveProperty("status");
           expect(posts[0]).toHaveProperty("title");
           expect(posts[0]).toHaveProperty("description");
           expect(posts[0]).toHaveProperty("likes");
-          expect(posts[0]).toHaveProperty("comments");
           expect(posts[0]).toHaveProperty("owner");
           expect(posts[0]).toHaveProperty("createdAt");
           expect(posts[0]).toHaveProperty("filename");
           resolve(response.body.data.posts);
+        }
+      });
+  });
+};
+
+const getSinglePost = (
+  url: string | Function,
+  id: string
+): Promise<PostTest> => {
+  return new Promise((resolve, reject) => {
+    request(url)
+      .post("/graphql")
+      .set("Content-type", "application/json")
+      .send({
+        query: `query PostById($postByIdId: ID!) {
+          postById(id: $postByIdId) {
+            id
+            status
+            title
+            description
+            likes {
+              id
+            }
+            owner {
+              id
+            }
+            createdAt
+            filename
+          }
+        }`,
+        variables: {
+          postByIdId: id,
+        },
+      })
+      .expect(200, (err, response) => {
+        if (err) {
+          reject(err);
+        } else {
+          const post = response.body.data.postById;
+          expect(post).toHaveProperty("id");
+          expect(post).toHaveProperty("status");
+          expect(post).toHaveProperty("title");
+          expect(post).toHaveProperty("description");
+          expect(post).toHaveProperty("likes");
+          expect(post).toHaveProperty("owner");
+          expect(post.owner).toHaveProperty("id");
+          expect(post).toHaveProperty("createdAt");
+          expect(post).toHaveProperty("filename");
+          resolve(response.body.data.post);
         }
       });
   });
@@ -122,4 +166,111 @@ const postPost = (
   });
 };
 
-export { getPost, postFile, postPost };
+const getPostByOwner = (
+  url: string | Function,
+  id: string
+): Promise<PostTest[]> => {
+  return new Promise((resolve, reject) => {
+    request(url)
+      .post("/graphql")
+      .set("Content-type", "application/json")
+      .send({
+        query: `query PostByOwner($userId: ID!) {
+          postByOwner(userId: $userId) {
+            id
+            status
+            title
+            description
+            likes {
+              id
+            }
+            owner {
+              id
+            }
+            createdAt
+            filename
+          }
+        }`,
+        variables: {
+          userId: id,
+        },
+      })
+      .expect(200, (err, response) => {
+        if (err) {
+          reject(err);
+        } else {
+          const posts = response.body.data.postByOwner;
+          expect(posts).toBeInstanceOf(Array);
+          expect(posts[0]).toHaveProperty("id");
+          expect(posts[0]).toHaveProperty("status");
+          expect(posts[0]).toHaveProperty("title");
+          expect(posts[0]).toHaveProperty("description");
+          expect(posts[0]).toHaveProperty("likes");
+          expect(posts[0]).toHaveProperty("owner");
+          expect(posts[0]).toHaveProperty("createdAt");
+          expect(posts[0]).toHaveProperty("filename");
+          resolve(response.body.data.postsByOwner);
+        }
+      });
+  });
+};
+
+const userPutPost = (
+  url: string | Function,
+  post: PostTest,
+  token: string,
+  id: string
+): Promise<PostTest> => {
+  return new Promise((resolve, reject) => {
+    request(url)
+      .post(`/graphql`)
+      .set("Content-type", "application/json")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        query: `mutation UpdatePost($updatePostId: ID!, $status: String!, $title: String, $description: String) {
+          updatePost(id: $updatePostId, status: $status, title: $title, description: $description) {
+            id
+            status
+            title
+            description
+            likes {
+              id
+            }
+            owner {
+              id
+            }
+            createdAt
+            filename
+          }
+        }`,
+        variables: {
+          ...post,
+          updatePostId: id,
+        },
+      })
+      .expect(200, (err, response) => {
+        if (err) {
+          reject(err);
+        } else {
+          const updatedPost = response.body.data.updatePost;
+          expect(updatedPost).toHaveProperty("status");
+          expect(updatedPost).toHaveProperty("title");
+          expect(updatedPost).toHaveProperty("description");
+          expect(updatedPost.status).toBe(post.status);
+          expect(updatedPost.title).toBe(post.title);
+          expect(updatedPost.title).not.toBe("Unknown");
+          expect(updatedPost.description).toBe(post.description);
+          resolve(updatedPost);
+        }
+      });
+  });
+};
+
+export {
+  getPost,
+  getSinglePost,
+  postFile,
+  postPost,
+  getPostByOwner,
+  userPutPost,
+};

@@ -18,7 +18,21 @@ import {
 import jwt from "jsonwebtoken";
 import { getNotFound, loginBrute, loginBruteExpress } from "./apiFunctions";
 import { PostTest } from "../src/interfaces/Post";
-import { getPost, postFile, postPost } from "./postFunctions";
+import {
+  getPost,
+  getPostByOwner,
+  getSinglePost,
+  postFile,
+  postPost,
+  userPutPost,
+} from "./postFunctions";
+import {
+  createComment,
+  getComments,
+  getSingleComment,
+  updateComment,
+} from "./commentFunctions";
+import { CommentTest } from "../src/interfaces/Comment";
 
 describe("Testing user interactions in graphql api", () => {
   // Connect to database
@@ -123,6 +137,60 @@ describe("Testing user interactions in graphql api", () => {
   // test get array of posts
   it("should return array of posts", async () => {
     await getPost(app);
+  });
+
+  // test get single post
+  it("should return single post", async () => {
+    await getSinglePost(app, postID);
+  });
+
+  // test get post by owner/user
+  it("should return array of posts by owner", async () => {
+    await getPostByOwner(app, userData.user.id!);
+  });
+
+  // test update post
+  it("should update post", async () => {
+    let updatedPostData: PostTest = {
+      status: "found",
+      title: "Harmaasieppo",
+      description: "Updated description " + randomstring.generate(50),
+    };
+    await userPutPost(app, updatedPostData, userData.token!, postID);
+  });
+
+  let commentData: CommentTest;
+  // test create comment
+  it("should create comment", async () => {
+    let comment = {
+      text: "Test comment " + randomstring.generate(50),
+      owner: userData2.user.id! as unknown as Types.ObjectId,
+      post: postID as unknown as Types.ObjectId,
+    };
+    commentData = await createComment(app, comment, userData2.token!);
+  });
+
+  // test get comments
+  it("should return array of comments", async () => {
+    await getComments(app);
+  });
+
+  // test get single comment
+  it("should return single comment", async () => {
+    await getSingleComment(app, commentData.id!);
+  });
+
+  // test update comment
+  it("should update comment", async () => {
+    let updatedCommentData: CommentTest = {
+      text: "Updated comment " + randomstring.generate(50),
+    };
+    await updateComment(
+      app,
+      updatedCommentData,
+      userData2.token!,
+      commentData.id!
+    );
   });
 
   // test update user

@@ -9,15 +9,22 @@ export default {
       const foundPosts = await postModel
         .find()
         .populate("likes")
-        .populate("comments")
         .populate("owner");
       return foundPosts;
     },
     postById: async (_parent: undefined, args: { id: string }) => {
-      return await postModel.findById(args.id);
+      return await postModel
+        .findById(args.id)
+        .populate("likes")
+        .populate("owner");
     },
-    postByOwner: async (_parent: undefined, args: { id: string }) => {
-      return await postModel.find({ owner: args.id });
+    postByOwner: async (_parent: undefined, args: { userId: string }) => {
+      return await postModel
+        .find({
+          owner: args.userId,
+        })
+        .populate("likes")
+        .populate("owner");
     },
   },
   Mutation: {
@@ -36,7 +43,7 @@ export default {
       }
     },
     updatePost: async (_parent: undefined, args: Post, user: TokenUser) => {
-      const post = await postModel.findByIdAndUpdate(args.id, args);
+      const post = await postModel.findById(args.id);
       if (!post) {
         return;
       }
@@ -45,7 +52,10 @@ export default {
           extensions: { code: "NOT_AUTHORIZED" },
         });
       }
-      return await postModel.findByIdAndUpdate(args.id, args, { new: true });
+      return await postModel
+        .findByIdAndUpdate(args.id, args, { new: true })
+        .populate("likes")
+        .populate("owner");
     },
     deletePost: async (
       _parent: undefined,
