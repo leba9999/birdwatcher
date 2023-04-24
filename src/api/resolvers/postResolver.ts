@@ -62,7 +62,10 @@ export default {
       args: { id: string },
       user: TokenUser
     ) => {
+      console.log(user);
+      console.log(args);
       const post = await postModel.findById(args.id);
+      console.log(post);
       if (!post) {
         return;
       }

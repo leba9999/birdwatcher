@@ -266,6 +266,117 @@ const userPutPost = (
   });
 };
 
+const wrongUserPutPost = (
+  url: string | Function,
+  post: PostTest,
+  token: string,
+  id: string
+): Promise<PostTest> => {
+  return new Promise((resolve, reject) => {
+    request(url)
+      .post(`/graphql`)
+      .set("Content-type", "application/json")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        query: `mutation UpdatePost($updatePostId: ID!, $status: String!, $title: String, $description: String) {
+          updatePost(id: $updatePostId, status: $status, title: $title, description: $description) {
+            id
+            status
+            title
+            description
+            likes {
+              id
+            }
+            owner {
+              id
+            }
+            createdAt
+            filename
+          }
+        }`,
+        variables: {
+          ...post,
+          updatePostId: id,
+        },
+      })
+      .expect(200, (err, response) => {
+        if (err) {
+          reject(err);
+        } else {
+          const updatedPost = response.body.data;
+          expect(updatedPost).toBe(null);
+          resolve(updatedPost);
+        }
+      });
+  });
+};
+// delete post
+const deletePost = (
+  url: string | Function,
+  token: string,
+  id: string
+): Promise<PostTest> => {
+  return new Promise((resolve, reject) => {
+    request(url)
+      .post(`/graphql`)
+      .set("Content-type", "application/json")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        query: `mutation DeletePost($deletePostId: ID!) {
+          deletePost(id: $deletePostId) {
+            id
+          }
+        }`,
+        variables: {
+          deletePostId: id,
+        },
+      })
+      .expect(200, (err, response) => {
+        console.log(response.body);
+        if (err) {
+          reject(err);
+        } else {
+          const deletedPost = response.body.data.deletePost;
+          expect(deletedPost).toHaveProperty("id");
+          resolve(deletedPost);
+        }
+      });
+  });
+};
+
+const wrongUserDeletePost = (
+  url: string | Function,
+  token: string,
+  id: string
+): Promise<PostTest> => {
+  return new Promise((resolve, reject) => {
+    request(url)
+      .post(`/graphql`)
+      .set("Content-type", "application/json")
+      .set("Authorization", `Bearer ${token}`)
+      .send({
+        query: `mutation DeletePost($deletePostId: ID!) {
+          deletePost(id: $deletePostId) {
+            id
+          }
+        }`,
+        variables: {
+          deletePostId: id,
+        },
+      })
+      .expect(200, (err, response) => {
+        console.log(response.body);
+        if (err) {
+          reject(err);
+        } else {
+          const deletedPost = response.body.data;
+          expect(deletedPost).toBe(null);
+          resolve(deletedPost);
+        }
+      });
+  });
+};
+
 export {
   getPost,
   getSinglePost,
@@ -273,4 +384,7 @@ export {
   postPost,
   getPostByOwner,
   userPutPost,
+  wrongUserPutPost,
+  deletePost,
+  wrongUserDeletePost,
 };

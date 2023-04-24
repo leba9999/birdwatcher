@@ -19,20 +19,27 @@ import jwt from "jsonwebtoken";
 import { getNotFound, loginBrute, loginBruteExpress } from "./apiFunctions";
 import { PostTest } from "../src/interfaces/Post";
 import {
+  deletePost,
   getPost,
   getPostByOwner,
   getSinglePost,
   postFile,
   postPost,
   userPutPost,
+  wrongUserDeletePost,
+  wrongUserPutPost,
 } from "./postFunctions";
 import {
   createComment,
+  deleteComment,
   getComments,
   getSingleComment,
   updateComment,
+  wrongUserDeleteComment,
+  wrongUserUpdateComment,
 } from "./commentFunctions";
 import { CommentTest } from "../src/interfaces/Comment";
+import { Express } from "express-serve-static-core";
 
 describe("Testing user interactions in graphql api", () => {
   // Connect to database
@@ -159,6 +166,16 @@ describe("Testing user interactions in graphql api", () => {
     await userPutPost(app, updatedPostData, userData.token!, postID);
   });
 
+  // test wrong user update post
+  it("should not update post", async () => {
+    let updatedPostData: PostTest = {
+      status: "found",
+      title: "Not allowed to update",
+      description: "Test description " + randomstring.generate(50),
+    };
+    await wrongUserPutPost(app, updatedPostData, userData2.token!, postID);
+  });
+
   let commentData: CommentTest;
   // test create comment
   it("should create comment", async () => {
@@ -191,6 +208,39 @@ describe("Testing user interactions in graphql api", () => {
       userData2.token!,
       commentData.id!
     );
+  });
+
+  // test wrong user update comment
+  it("should not update comment as wrong user", async () => {
+    let updatedCommentData: CommentTest = {
+      text: "Should not update comment " + randomstring.generate(50),
+    };
+    await wrongUserUpdateComment(
+      app,
+      updatedCommentData,
+      userData.token!,
+      commentData.id!
+    );
+  });
+
+  // test wrong user delete comment
+  it("should not delete comment as wrong user", async () => {
+    await wrongUserDeleteComment(app, userData.token!, commentData.id!);
+  });
+
+  // test delete comment
+  it("should delete comment", async () => {
+    await deleteComment(app, userData2.token!, commentData.id!);
+  });
+
+  // test wrong user delete post
+  it("should not delete post as wrong user", async () => {
+    await wrongUserDeletePost(app, userData2.token!, postID);
+  });
+
+  // test delete post
+  it("should delete post", async () => {
+    await deletePost(app, userData.token!, postID);
   });
 
   // test update user

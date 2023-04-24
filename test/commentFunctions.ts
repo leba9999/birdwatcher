@@ -173,12 +173,14 @@ const updateComment = (
 
 const deleteComment = (
   url: string | Function,
+  token: string,
   id: string
 ): Promise<CommentTest> => {
   return new Promise((resolve, reject) => {
     request(url)
       .post("/graphql")
       .set("Content-type", "application/json")
+      .set("Authorization", "Bearer " + token)
       .send({
         query: `mutation DeleteComment($deleteCommentId: ID!) {
             deleteComment(id: $deleteCommentId) {
@@ -201,10 +203,86 @@ const deleteComment = (
   });
 };
 
+const wrongUserUpdateComment = (
+  url: string | Function,
+  comment: CommentTest,
+  token: string,
+  id: string
+): Promise<CommentTest> => {
+  return new Promise((resolve, reject) => {
+    request(url)
+      .post("/graphql")
+      .set("Content-type", "application/json")
+      .set("Authorization", "Bearer " + token)
+      .send({
+        query: `mutation UpdateComment($updateCommentId: ID!, $text: String!) {
+            updateComment(id: $updateCommentId, text: $text) {
+              id
+              text
+              owner {
+                id
+              }
+              post {
+                id
+              }
+              createdAt
+            }
+          }`,
+        variables: {
+          ...comment,
+          updateCommentId: id,
+        },
+      })
+      .expect(200, (err, response) => {
+        if (err) {
+          reject(err);
+        } else {
+          const comment = response.body.data;
+          expect(comment).toBe(null);
+          resolve(response.body.data);
+        }
+      });
+  });
+};
+
+const wrongUserDeleteComment = (
+  url: string | Function,
+  token: string,
+  id: string
+): Promise<CommentTest> => {
+  return new Promise((resolve, reject) => {
+    request(url)
+      .post("/graphql")
+      .set("Content-type", "application/json")
+      .set("Authorization", "Bearer " + token)
+      .send({
+        query: `mutation DeleteComment($deleteCommentId: ID!) {
+            deleteComment(id: $deleteCommentId) {
+              id
+            }
+          }`,
+        variables: {
+          deleteCommentId: id,
+        },
+      })
+      .expect(200, (err, response) => {
+        if (err) {
+          reject(err);
+        } else {
+          const comment = response.body.data;
+          expect(comment).toBe(null);
+          resolve(comment);
+        }
+      });
+  });
+};
+
 export {
   getComments,
   getSingleComment,
   createComment,
   updateComment,
   deleteComment,
+  wrongUserUpdateComment,
+  wrongUserDeleteComment,
 };
