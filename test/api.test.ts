@@ -176,6 +176,27 @@ describe("Testing user interactions in graphql api", () => {
     await wrongUserPutPost(app, updatedPostData, userData2.token!, postID);
   });
 
+  // test admin update post
+  it("admin should update post", async () => {
+    let updatedPostData: PostTest = {
+      status: "found",
+      title: "Admin has edited this post",
+      description: "Updated description " + randomstring.generate(50),
+    };
+    await userPutPost(app, updatedPostData, adminData.token!, postID);
+  });
+
+  let postID2: string;
+  it("should create second post", async () => {
+    const post = await postPost(app, postData, userData2.token!);
+    postID2 = post.id!;
+  });
+
+  // test admin can delete others posts
+  it("admin should delete post", async () => {
+    await deletePost(app, adminData.token!, postID2);
+  });
+
   let commentData: CommentTest;
   // test create comment
   it("should create comment", async () => {
@@ -185,6 +206,28 @@ describe("Testing user interactions in graphql api", () => {
       post: postID as unknown as Types.ObjectId,
     };
     commentData = await createComment(app, comment, userData2.token!);
+  });
+
+  let commentData2: CommentTest;
+  // test another create comment
+  it("should create another comment", async () => {
+    let comment = {
+      text: "Test comment " + randomstring.generate(50),
+      owner: userData.user.id! as unknown as Types.ObjectId,
+      post: postID as unknown as Types.ObjectId,
+    };
+    commentData2 = await createComment(app, comment, userData.token!);
+  });
+
+  let commentData3: CommentTest;
+  // test admin can create comment
+  it("admin should create comment", async () => {
+    let comment = {
+      text: "Test comment " + randomstring.generate(50),
+      owner: adminData.user.id! as unknown as Types.ObjectId,
+      post: postID as unknown as Types.ObjectId,
+    };
+    commentData3 = await createComment(app, comment, adminData.token!);
   });
 
   // test get comments
@@ -223,6 +266,31 @@ describe("Testing user interactions in graphql api", () => {
     );
   });
 
+  // test admin update comment
+  it("admin should update own comment", async () => {
+    let updatedCommentData: CommentTest = {
+      text: "Admin has edited this comment " + randomstring.generate(50),
+    };
+    await updateComment(
+      app,
+      updatedCommentData,
+      adminData.token!,
+      commentData3.id!
+    );
+  });
+  // test admin update comment
+  it("admin should update others comment", async () => {
+    let updatedCommentData: CommentTest = {
+      text: "Admin has edited this comment " + randomstring.generate(50),
+    };
+    await updateComment(
+      app,
+      updatedCommentData,
+      adminData.token!,
+      commentData2.id!
+    );
+  });
+
   // test wrong user delete comment
   it("should not delete comment as wrong user", async () => {
     await wrongUserDeleteComment(app, userData.token!, commentData.id!);
@@ -231,6 +299,15 @@ describe("Testing user interactions in graphql api", () => {
   // test delete comment
   it("should delete comment", async () => {
     await deleteComment(app, userData2.token!, commentData.id!);
+  });
+
+  // test admin delete comment
+  it("admin should delete own comment", async () => {
+    await deleteComment(app, adminData.token!, commentData3.id!);
+  });
+  // test admin delete comment
+  it("admin should delete others comment", async () => {
+    await deleteComment(app, adminData.token!, commentData2.id!);
   });
 
   // test wrong user delete post

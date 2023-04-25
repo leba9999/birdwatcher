@@ -332,7 +332,6 @@ const deletePost = (
         },
       })
       .expect(200, (err, response) => {
-        console.log(response.body);
         if (err) {
           reject(err);
         } else {
@@ -365,7 +364,6 @@ const wrongUserDeletePost = (
         },
       })
       .expect(200, (err, response) => {
-        console.log(response.body);
         if (err) {
           reject(err);
         } else {

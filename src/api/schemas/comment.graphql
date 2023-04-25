@@ -1,25 +1,22 @@
-
 scalar DateTime
 
 type Comment {
-    id: ID!
-    text: String!
-    owner: User!
-    post: Post!
-    createdAt: DateTime!
+  id: ID!
+  text: String!
+  owner: User!
+  post: Post!
+  createdAt: DateTime!
 }
 
 type Query {
-    comments: [Comment!]!
-    commentById(id: ID!): Comment!
-    commentByOwner(owner: ID!): [Comment!]!
-    commentByPost(post: ID!): [Comment!]!
+  comments: [Comment!]!
+  commentById(id: ID!): Comment!
+  commentByOwner(owner: ID!): [Comment!]!
+  commentByPost(post: ID!): [Comment!]!
 }
 
 type Mutation {
-    createComment(text: String!, owner: ID!, post: ID!): Comment!
-    updateComment(id: ID!, text: String!): Comment!
-    deleteComment(id: ID!): Comment!
-    updateCommentAsAdmin(id: ID!, text: String!): Comment!
-    deleteCommentAsAdmin(id: ID!): Comment!
+  createComment(text: String!, owner: ID!, post: ID!): Comment!
+  updateComment(id: ID!, text: String!): Comment!
+  deleteComment(id: ID!): Comment!
 }

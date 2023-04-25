@@ -56,10 +56,12 @@ export default {
       if (!comment) {
         return;
       }
-      if (!user.token || comment.owner._id.toString() !== user.id) {
-        throw new GraphQLError("Not authorized", {
-          extensions: { code: "NOT_AUTHORIZED" },
-        });
+      if (user.role !== "admin") {
+        if (!user.token || comment.owner._id.toString() !== user.id) {
+          throw new GraphQLError("Not authorized", {
+            extensions: { code: "NOT_AUTHORIZED" },
+          });
+        }
       }
       return await commentModel
         .findByIdAndUpdate(args.id, args, { new: true })
@@ -75,34 +77,12 @@ export default {
       if (!comment) {
         return;
       }
-      if (!user.token || comment.owner._id.toString() !== user.id) {
-        throw new GraphQLError("Not authorized", {
-          extensions: { code: "NOT_AUTHORIZED" },
-        });
-      }
-      return await commentModel.findByIdAndDelete(args.id);
-    },
-    updateCommentAsAdmin: async (
-      _parent: undefined,
-      args: Comment,
-      user: TokenUser
-    ) => {
-      if (!user.token || user.role !== "admin") {
-        throw new GraphQLError("Not authorized", {
-          extensions: { code: "NOT_AUTHORIZED" },
-        });
-      }
-      return await commentModel.findByIdAndUpdate(args.id, args, { new: true });
-    },
-    deleteCommentAsAdmin: async (
-      _parent: undefined,
-      args: { id: string },
-      user: TokenUser
-    ) => {
-      if (!user.token || user.role !== "admin") {
-        throw new GraphQLError("Not authorized", {
-          extensions: { code: "NOT_AUTHORIZED" },
-        });
+      if (user.role !== "admin") {
+        if (!user.token || comment.owner._id.toString() !== user.id) {
+          throw new GraphQLError("Not authorized", {
+            extensions: { code: "NOT_AUTHORIZED" },
+          });
+        }
       }
       return await commentModel.findByIdAndDelete(args.id);
     },

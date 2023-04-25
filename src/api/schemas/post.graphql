@@ -43,16 +43,4 @@ type Mutation {
     filename: String
   ): Post!
   deletePost(id: ID!): Post!
-
-  updatePostAsAdmin(
-    id: ID!
-    status: String
-    title: String
-    description: String
-    likes: [ID]
-    owner: ID!
-    createdAt: DateTime!
-    filename: String
-  ): Post!
-  deletePostAsAdmin(id: ID!): Post!
 }

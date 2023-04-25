@@ -47,10 +47,12 @@ export default {
       if (!post) {
         return;
       }
-      if (!user.token || post.owner._id.toString() !== user.id) {
-        throw new GraphQLError("Not authorized", {
-          extensions: { code: "NOT_AUTHORIZED" },
-        });
+      if (user.role !== "admin") {
+        if (!user.token || post.owner._id.toString() !== user.id) {
+          throw new GraphQLError("Not authorized", {
+            extensions: { code: "NOT_AUTHORIZED" },
+          });
+        }
       }
       return await postModel
         .findByIdAndUpdate(args.id, args, { new: true })
@@ -62,41 +64,16 @@ export default {
       args: { id: string },
       user: TokenUser
     ) => {
-      console.log(user);
-      console.log(args);
       const post = await postModel.findById(args.id);
-      console.log(post);
       if (!post) {
         return;
       }
-      if (!user.token || post.owner._id.toString() !== user.id) {
-        throw new GraphQLError("Not authorized", {
-          extensions: { code: "NOT_AUTHORIZED" },
-        });
-      }
-      return await postModel.findByIdAndDelete(args.id);
-    },
-    updatePostAsAdmin: async (
-      _parent: undefined,
-      args: Post,
-      user: TokenUser
-    ) => {
-      if (!user.token || user.role !== "admin") {
-        throw new GraphQLError("Not authorized", {
-          extensions: { code: "NOT_AUTHORIZED" },
-        });
-      }
-      return await postModel.findByIdAndUpdate(args.id, args, { new: true });
-    },
-    deletePostAsAdmin: async (
-      _parent: undefined,
-      args: { id: string },
-      user: TokenUser
-    ) => {
-      if (!user.token || user.role !== "admin") {
-        throw new GraphQLError("Not authorized", {
-          extensions: { code: "NOT_AUTHORIZED" },
-        });
+      if (user.role !== "admin") {
+        if (!user.token || post.owner._id.toString() !== user.id) {
+          throw new GraphQLError("Not authorized", {
+            extensions: { code: "NOT_AUTHORIZED" },
+          });
+        }
       }
       return await postModel.findByIdAndDelete(args.id);
     },
