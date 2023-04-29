@@ -1,4 +1,4 @@
-import express from 'express';
+import express from "express";
 import {
   check,
   checkToken,
@@ -9,24 +9,24 @@ import {
   userPost,
   userPut,
   userPutAsAdmin,
-} from '../controllers/userController';
-import {authenticate} from '../../middlewares';
+} from "../controllers/userController";
+import { authenticate } from "../../middlewares";
 
 const router = express.Router();
 
 router
-  .route('/')
+  .route("/")
   .get(userListGet)
   .post(userPost)
   .put(authenticate, userPut)
   .delete(authenticate, userDelete);
 
-router.get('/token', authenticate, checkToken);
+router.get("/token", authenticate, checkToken);
 
-router.route('/check').get(check);
+router.route("/check").get(check);
 
 router
-  .route('/:id')
+  .route("/:id")
   .get(userGet)
   .put(authenticate, userPutAsAdmin)
   .delete(authenticate, userDeleteAsAdmin);

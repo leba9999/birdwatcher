@@ -1,17 +1,17 @@
-import {NextFunction, Request, Response} from 'express';
-import userModel from '../models/userModel';
-import CustomError from '../../classes/CustomError';
-import {User, OutputUser, TokenUser} from '../../interfaces/User';
-import bcrypt from 'bcryptjs';
-import DBMessageResponse from '../../interfaces/responses/DBMessageResponse';
+import { NextFunction, Request, Response } from "express";
+import userModel from "../models/userModel";
+import CustomError from "../../classes/CustomError";
+import { User, OutputUser, TokenUser } from "../../interfaces/User";
+import bcrypt from "bcryptjs";
+import DBMessageResponse from "../../interfaces/responses/DBMessageResponse";
 
 const check = (req: Request, res: Response) => {
-  res.json({message: 'I am alive'});
+  res.json({ message: "I am alive" });
 };
 
 const userListGet = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const users = await userModel.find().select('-password -role');
+    const users = await userModel.find().select("-password -role");
     res.json(users);
   } catch (error) {
     next(new CustomError((error as Error).message, 500));
@@ -19,16 +19,16 @@ const userListGet = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const userGet = async (
-  req: Request<{id: string}>,
+  req: Request<{ id: string }>,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const user = await userModel
       .findById(req.params.id)
-      .select('-password -role');
+      .select("-password -role");
     if (!user) {
-      next(new CustomError('User not found', 404));
+      next(new CustomError("User not found", 404));
       return;
     }
     res.json(user);
@@ -47,7 +47,7 @@ const userPost = async (
     user.password = await bcrypt.hashSync(user.password, 10);
     const newUser = await userModel.create(user);
     const response: DBMessageResponse = {
-      message: 'user created',
+      message: "user created",
       user: {
         username: newUser.username,
         email: newUser.email,
@@ -56,27 +56,25 @@ const userPost = async (
     };
     res.json(response);
   } catch (error) {
-
     console.log(error);
-    next(new CustomError('Duplicate entry', 200));
+    next(new CustomError("Duplicate entry", 200));
   }
 };
 
 const userPut = async (
   req: Request<{}, {}, User>,
-  res: Response<{}, {user: TokenUser}>,
+  res: Response<{}, { user: TokenUser }>,
   next: NextFunction
 ) => {
   try {
     const userFromToken = res.locals.user;
-
 
     const user = req.body;
     if (user.password) {
       user.password = await bcrypt.hashSync(user.password, 10);
     }
     //check if user is not admin and is trying to change role
-    if(userFromToken.role !== 'admin'){
+    if (userFromToken.role !== "admin") {
       user.role = userFromToken.role;
     }
 
@@ -84,15 +82,15 @@ const userPut = async (
       .findByIdAndUpdate(userFromToken.id, user, {
         new: true,
       })
-      .select('-password -role');
+      .select("-password -role");
 
     if (!result) {
-      next(new CustomError('User not found', 404));
+      next(new CustomError("User not found", 404));
       return;
     }
 
     const response: DBMessageResponse = {
-      message: 'user updated',
+      message: "user updated",
       user: {
         username: result.username,
         email: result.email,
@@ -107,20 +105,20 @@ const userPut = async (
 
 const userDelete = async (
   req: Request,
-  res: Response<{}, {user: OutputUser}>,
+  res: Response<{}, { user: OutputUser }>,
   next: NextFunction
 ) => {
   try {
     const userFromToken = res.locals.user;
-    console.log('user from token', userFromToken);
+    console.log("user from token", userFromToken);
 
     const result = await userModel.findByIdAndDelete(userFromToken.id);
     if (!result) {
-      next(new CustomError('User not found', 404));
+      next(new CustomError("User not found", 404));
       return;
     }
     const response: DBMessageResponse = {
-      message: 'user deleted',
+      message: "user deleted",
       user: {
         username: result.username,
         email: result.email,
@@ -135,12 +133,12 @@ const userDelete = async (
 
 const userPutAsAdmin = async (
   req: Request<{}, {}, User>,
-  res: Response<{}, {user: TokenUser}>,
+  res: Response<{}, { user: TokenUser }>,
   next: NextFunction
 ) => {
   try {
-    if (res.locals.user.role !== 'admin') {
-      next(new CustomError('You are not authorized to do this', 401));
+    if (res.locals.user.role !== "admin") {
+      next(new CustomError("You are not authorized to do this", 401));
       return;
     }
     const user = req.body;
@@ -152,15 +150,15 @@ const userPutAsAdmin = async (
       .findByIdAndUpdate(user.id, user, {
         new: true,
       })
-      .select('-password -role');
+      .select("-password -role");
 
     if (!result) {
-      next(new CustomError('User not found', 404));
+      next(new CustomError("User not found", 404));
       return;
     }
 
     const response: DBMessageResponse = {
-      message: 'user updated',
+      message: "user updated",
       user: {
         username: result.username,
         email: result.email,
@@ -175,21 +173,21 @@ const userPutAsAdmin = async (
 
 const userDeleteAsAdmin = async (
   req: Request,
-  res: Response<{}, {user: OutputUser}>,
+  res: Response<{}, { user: OutputUser }>,
   next: NextFunction
 ) => {
   try {
-    if (res.locals.user.role !== 'admin') {
-      next(new CustomError('You are not authorized to do this', 401));
+    if (res.locals.user.role !== "admin") {
+      next(new CustomError("You are not authorized to do this", 401));
       return;
     }
     const result = await userModel.findByIdAndDelete(req.params.id);
     if (!result) {
-      next(new CustomError('User not found', 404));
+      next(new CustomError("User not found", 404));
       return;
     }
     const response: DBMessageResponse = {
-      message: 'user deleted',
+      message: "user deleted",
       user: {
         username: result.username,
         email: result.email,
@@ -204,13 +202,13 @@ const userDeleteAsAdmin = async (
 
 const checkToken = async (
   req: Request,
-  res: Response<{}, {user: OutputUser}>,
+  res: Response<{}, { user: OutputUser }>,
   next: NextFunction
 ) => {
   const userFromToken = res.locals.user;
 
   const message: DBMessageResponse = {
-    message: 'Token is valid',
+    message: "Token is valid",
     user: userFromToken,
   };
   res.json(message);
