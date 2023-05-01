@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { Point } from "geojson";
 import CustomError from "../../classes/CustomError";
+import path from "path";
 
 const uploadPost = async (
   req: Request,
@@ -16,7 +17,10 @@ const uploadPost = async (
     const response = {
       message: "file uploaded",
       data: {
-        filename: req.file.filename,
+        filename: path.basename(
+          req.file.filename,
+          path.extname(req.file.filename)
+        ),
       },
     };
     res.json(response);

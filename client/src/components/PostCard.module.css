@@ -1,0 +1,44 @@
+.box{
+    max-width: 40em;
+    width: 100%;
+    height: fit-content;
+    padding: 1em 2em 1em 2em;
+    background-color: #2d2d30;
+    color: #c7c2c2;
+    border-radius: 8px;
+    text-align: left;
+    margin: auto;
+    margin-bottom: 1em;
+}
+.imagePreview{
+    width: 100%;
+    min-height: 20em;
+    object-fit: cover;
+    border-radius: 1em;
+}
+.imageBox{
+    position: relative;
+    background-color: #1e1e20;
+    border-radius: 1em;
+}
+.loading{
+    color: #c7c2c2;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: fit-content;
+    position: absolute;
+    top: 40%;
+    left: 40%;
+    z-index: 100;
+}
+.loading > p {
+    display: inline-block;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    top: 65px
+}

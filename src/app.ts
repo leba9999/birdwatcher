@@ -79,7 +79,15 @@ app.use(express.json());
     );
 
     app.use("/api/v1", api);
-    app.use("/uploads", express.static("uploads"));
+    app.use(cors());
+    app.use(
+      "/uploads",
+      express.static("./uploads", {
+        setHeaders: (res, path, stat) => {
+          res.set("Cross-Origin-Resource-Policy", "cross-origin");
+        },
+      })
+    );
 
     app.use(notFound);
     app.use(errorHandler);

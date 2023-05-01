@@ -93,7 +93,6 @@ function Post() {
                     setLoading(false);
                 });
             }
-            console.log();
         }
     }
 
@@ -106,6 +105,9 @@ function Post() {
         setSelectedFile(null);
     };
 
+    const handleInput = () =>{
+        setDesc(descRef.current?.value as string)
+      }
     return (
       <>
         {
@@ -131,7 +133,7 @@ function Post() {
             
             <Form.Group className={classes.formGroup} controlId="formBasicDesc">
                 <Form.Label className={classes.text}>Description</Form.Label>
-                <Form.Control className={`${classes.formTextArea} ${classes.formInput}`} name="desc" maxLength={descMaxLength} as="textarea" type="text" placeholder="Enter description" ref={descRef} />
+                <Form.Control className={`${classes.formTextArea} ${classes.formInput}`} name="desc" maxLength={descMaxLength} as="textarea" type="text" placeholder="Enter description" value={desc} onChange={handleInput} ref={descRef} />
                 <Form.Text className={classes.text}>{desc.length}/{descMaxLength}</Form.Text>
             </Form.Group>
             <Button className={classes.formButton} variant="primary" type="submit">
