@@ -6,10 +6,11 @@ import LoadingLayout from "./LoadingLayout";
 import {UserContext} from "../Util/UserContext";
 import { TokenUser } from '../Interfaces/User';
 import LoginMessageResponse from '../Interfaces/LoginMessageResponse';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
     const userFromContext = useContext(UserContext);
+    const navigate = useNavigate(); 
 
     const [loginError, setLoginError] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -21,7 +22,7 @@ const LoginForm = () => {
     const usernameRef = useRef<HTMLInputElement | null>(null);
     const passwordRef = useRef<HTMLInputElement | null>(null);
 
-    function submit(event: React.FormEvent<HTMLFormElement>){
+    function handleSubmit(event: React.FormEvent<HTMLFormElement>){
         const form = formRef.current;
         if(!event){
             return;
@@ -63,6 +64,7 @@ const LoginForm = () => {
                     setLoginError(true);
                 }).finally(() => {
                     setLoading(false);
+                    navigate('/');
                 });
             }
         }
@@ -80,8 +82,8 @@ const LoginForm = () => {
             {
                 loading ? <LoadingLayout/> : null
             }
-            <Form ref={formRef} className={classes.Form} noValidate validated={validated} onSubmit={submit}>
-                <Form.Group className={classes.formGroup} controlId="formBasicEmail">
+            <Form ref={formRef} className={classes.Form} noValidate validated={validated} onSubmit={handleSubmit}>
+                <Form.Group className={classes.formGroup} controlId="formBasicUsername">
                     <Form.Label>Username</Form.Label>
                     <Form.Control className={loginError ? `${classes.formInput} ${classes.invalid}` : `${classes.formInput}`} autoComplete={"username"} required type="text" placeholder="Enter username" ref={usernameRef} />
                     <Form.Control.Feedback>Username is valid</Form.Control.Feedback>
