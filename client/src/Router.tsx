@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import App from "./App";
-import { UserContext } from "./Util/UserContext";
+import { UserContext } from "./util/UserContext";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NewPost from "./pages/NewPost";
