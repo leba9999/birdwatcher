@@ -1,0 +1,19 @@
+.dropzone{
+    width: 100%;
+    height: 100%;
+    display: flexbox;
+}
+
+.active {
+    background-color: rgba(0, 0, 0, 0.2);
+    color: #0d6efd;
+}
+
+.text{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
