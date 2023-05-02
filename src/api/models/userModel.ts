@@ -25,6 +25,10 @@ const userModel = new mongoose.Schema<User>({
     default: Date.now,
     required: true,
   },
+  filename: {
+    type: String,
+    default: "profile",
+  },
 });
 
 // Duplicate the ID field.

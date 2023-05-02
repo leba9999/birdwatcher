@@ -6,12 +6,10 @@ import { User } from "../Interfaces/User";
 import { Post } from "../Interfaces/Post";
 import PostCard from "../components/PostCard";
 import { Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-function Profile() {
-  const userFromContext = useContext(UserContext);
-  const navigate = useNavigate(); 
-
+function UserPage() {
+  const { id } = useParams()
   const [userData, setUserData] = useState<User | null>(null);
   const [postData, setPostData] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
@@ -36,7 +34,7 @@ function Profile() {
           }
         }`,
         variables: {
-          userByIdId: userFromContext?.user!.user.id
+          userByIdId: id
         },
       })
     }).then(async response => {
@@ -77,7 +75,7 @@ function Profile() {
           }
         }`,
         variables: {
-          userId: userFromContext?.user!.user.id,
+          userId: id,
         },
       })
     }).then(async response => {
@@ -112,7 +110,6 @@ function Profile() {
             <li>Posts: {postData?.length}</li>
           </ul>
         </div>
-        <Button variant="success" onClick={()=>navigate("/profile/edit")}>Edit account</Button>
       </div>
       
       <div className={classes.box}>
@@ -129,7 +126,7 @@ function Profile() {
         }
     </>
   );
-}
+  }
   
-export default Profile;
+  export default UserPage;
   

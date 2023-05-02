@@ -23,7 +23,7 @@ function PostCard({ post } : Props ) {
         </h3>
         </Link>
         <div className={classes.imageBox}>
-            <img className={classes.imagePreview} onLoadedData={()=>setLoading(false)} onLoad={()=>setLoading(false)} src={`http://localhost:5000/uploads/${post.filename}.jpg`} alt={post.filename}/>
+            <img className={classes.imagePreview} onLoadedData={()=>setLoading(false)} onLoad={()=>setLoading(false)} src={`http://localhost:5000/uploads/${post.filename}`} alt={post.filename}/>
             {
                 loading ? <div className={classes.loading}>
                 <Oval

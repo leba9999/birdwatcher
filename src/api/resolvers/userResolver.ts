@@ -2,6 +2,8 @@ import { GraphQLError } from "graphql";
 import { TokenUser, User } from "../../interfaces/User";
 import userModel from "../models/userModel";
 import LoginMessageResponse from "../../interfaces/responses/LoginMessageResponse";
+import postModel from "../models/postModel";
+import commentModel from "../models/commentModel";
 
 export default {
   Query: {
@@ -90,6 +92,12 @@ export default {
           extensions: { code: "NOT_AUTHORIZED" },
         });
       }
+      await postModel
+        .find({
+          owner: user.id,
+        })
+        .deleteMany();
+      await commentModel.find({ owner: user.id }).deleteMany();
       const response = await fetch(
         process.env.AUTH_SERVER_URL + "/api/v1/users",
         {

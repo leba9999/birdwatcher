@@ -11,6 +11,8 @@ import LoadingLayout from "./components/LoadingLayout";
 import { TokenUser } from "./Interfaces/User";
 import Register from "./pages/Register";
 import EditPost from "./pages/EditPost";
+import UserPage from "./pages/UserPage";
+import EditProfile from "./pages/EditProfile";
 
 function Router() {
     const [loading, setLoading] = useState(false);
@@ -54,7 +56,8 @@ function Router() {
                                     <Route index element={<Home/>}/>
                                     <Route path={"/:id"} element={<PostPage/>}/>
                                     <Route path={"/profile"} element={<Profile/>}/>
-                                    <Route path={"/user/:id"} element={<Profile/>}/>
+                                    <Route path={"/profile/edit"} element={<EditProfile/>}/>
+                                    <Route path={"/user/:id"} element={<UserPage/>}/>
                                     <Route path={"/edit/:id"} element={<EditPost/>}/>
                                     <Route path={"/new"} element={<NewPost/>}/>
                                 </Route>

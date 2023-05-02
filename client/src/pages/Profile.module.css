@@ -1,0 +1,80 @@
+
+.box{
+    max-width: 40em;
+    width: 100%;
+    height: fit-content;
+    padding: 0.1em 2em 0.2em 2em;
+    background-color: #2d2d30;
+    color: #c7c2c2;
+    border-radius: 8px;
+    text-align: left;
+    margin: 2em auto 2em auto;
+}
+
+.filter{
+    border-bottom: 2px solid #3b3b3f;
+}
+
+
+.tabButton {
+    min-width: 3.5em;
+    border: none;
+    background-color: transparent;
+    border-radius: 1.5em;
+    text-transform: capitalize;
+    padding: 0.5em;
+    color: #c7c2c2;
+    margin: 0.2em 0;
+ }
+.tabButton:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    text-transform: capitalize;
+    color: #c7c2c2;
+}
+.tabButton:active {
+    background-color: #5e35b1;
+    text-transform: capitalize;
+    color: #c7c2c2;
+}
+
+.active{
+    background-color: rgba(255, 255, 255, 0.8);
+    font-weight: bold;
+    padding: 0.5em;
+    color: black;
+}
+.active:hover{
+    background-color: rgba(255, 255, 255, 0.8);
+    font-weight: bold;
+    padding: 0.5em;
+    color: black;
+}
+
+.info{
+    display: flex;
+    flex-direction: row;
+}
+.details{
+    display: flex;
+    flex-direction: column;
+    margin-left: 2em;
+    font-size: large;
+    font-weight: bold;
+    list-style-type: none;
+    padding: 0;
+}
+.imagePreview{
+    width: 10em;
+    height: 10em;
+    object-fit: cover;
+    border-radius: 100%;
+    display: inline-block;
+}
+.imageBox{
+    position: relative;
+    background-color: #1e1e20;
+    border-radius: 1em;
+}
+.title{
+    border-bottom: #c7c2c2 solid 2px;
+}

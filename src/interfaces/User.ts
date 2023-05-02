@@ -8,6 +8,7 @@ interface User extends Document {
   role: "user" | "admin";
   password: string;
   createdAt: Date;
+  filename: string;
 }
 
 interface TokenUser {
@@ -22,6 +23,7 @@ interface OutputUser {
   email: string;
   role?: "user" | "admin";
   createdAt?: Date;
+  filename?: string;
 }
 
 interface UserTest {

@@ -47,7 +47,7 @@ function EditPostForm({ post, reload } : Props) {
 
     useEffect(() => {
         (async ()=>{
-            const newFile = await createFileFromLink(`http://localhost:5000/uploads/${post.filename}.jpg`, post.filename as string);
+            const newFile = await createFileFromLink(`http://localhost:5000/uploads/${post.filename}`, post.filename as string);
             setSelectedFile(newFile);
         })();
     }, []);

@@ -90,6 +90,7 @@ function PostView({ post, reload } : Props ) {
     const handleInput = () =>{
         setCommentText(commentRef.current?.value as string)
     }
+    console.log(post.createdAt)
     return (
     <div className={classes.box}>
         <Link className={classes.link} to={`/user/${post.owner.id}`}>
@@ -100,7 +101,7 @@ function PostView({ post, reload } : Props ) {
             {post.title}
         </h3>
         <div className={classes.imageBox}>
-            <img className={classes.imagePreview} onLoadedData={()=>setLoading(false)} onLoad={()=>setLoading(false)} src={`http://localhost:5000/uploads/${post.filename}.jpg`} alt={post.filename}/>
+            <img className={classes.imagePreview} onLoadedData={()=>setLoading(false)} onLoad={()=>setLoading(false)} src={`http://localhost:5000/uploads/${post.filename}`} alt={post.filename}/>
             {
                 loading ? <div className={classes.loading}>
                 <Oval

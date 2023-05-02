@@ -5,9 +5,15 @@ interface User {
     username: string;
     email: string;
     role: 'user' | 'admin';
-    password: string;
     createdAt: Date;
-  }
+    filename: string;
+}
+interface InputUser {
+    username?: string;
+    email?: string;
+    filename?: string;
+    password?: string;
+}
 
 interface TokenUser {
     token: string,
@@ -24,4 +30,4 @@ interface OutputUser {
     email: string,
 }
 
-export type {TokenUser, OutputUser, User}
+export type {TokenUser, OutputUser, User, InputUser}
