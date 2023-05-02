@@ -4,8 +4,6 @@ import Form from 'react-bootstrap/Form';
 import {Button, Modal} from "react-bootstrap";
 import LoadingLayout from "./LoadingLayout";
 import {UserContext} from "../util/UserContext";
-import { TokenUser } from '../Interfaces/User';
-import LoginMessageResponse from '../Interfaces/LoginMessageResponse';
 import { useNavigate } from 'react-router-dom';
 
 const RegisterForm = () => {

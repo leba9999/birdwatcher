@@ -3,9 +3,8 @@ import { Post } from "../../interfaces/Post";
 
 const postModel = new mongoose.Schema<Post>({
   status: {
-    type: String,
-    enum: ["found", "unknown"],
-    default: "unknown",
+    type: Boolean,
+    default: false,
     required: true,
   },
   title: {
@@ -15,6 +14,7 @@ const postModel = new mongoose.Schema<Post>({
   description: {
     type: String,
   },
+
   likes: [
     {
       type: mongoose.Schema.Types.ObjectId,

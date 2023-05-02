@@ -10,6 +10,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoadingLayout from "./components/LoadingLayout";
 import { TokenUser } from "./Interfaces/User";
 import Register from "./pages/Register";
+import EditPost from "./pages/EditPost";
 
 function Router() {
     const [loading, setLoading] = useState(false);
@@ -54,6 +55,7 @@ function Router() {
                                     <Route path={"/:id"} element={<PostPage/>}/>
                                     <Route path={"/profile"} element={<Profile/>}/>
                                     <Route path={"/user/:id"} element={<Profile/>}/>
+                                    <Route path={"/edit/:id"} element={<EditPost/>}/>
                                     <Route path={"/new"} element={<NewPost/>}/>
                                 </Route>
                             </Routes> :

@@ -6,11 +6,13 @@ import LoadingLayout from "./LoadingLayout";
 import {UserContext} from "../util/UserContext";
 import Dropzone from './dropzone';
 import UploadMessageResponse from '../Interfaces/UploadMessageResponse';
+import { useNavigate } from 'react-router-dom';
 
 function NewPost() {
     
     const userFromContext = useContext(UserContext);
 
+    const navigate = useNavigate(); 
     const [loading, setLoading] = useState(false);
 
     const [uploadError, setUploadError] = useState(false);
@@ -82,7 +84,7 @@ function NewPost() {
                     const resJson = await response.json();
                     console.log(resJson);
                     if(!resJson.errors){
-                        //handleShow();
+                        navigate("/"+resJson.data.createPost.id);
                     }else{
                         throw new Error('Dubplicate username or email!');
                     }

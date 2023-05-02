@@ -2,7 +2,7 @@ scalar DateTime
 
 type Post {
   id: ID!
-  status: String!
+  status: Boolean!
   title: String
   description: String
   likes: [User]
@@ -13,7 +13,7 @@ type Post {
 }
 type CreatedPost {
   id: ID!
-  status: String!
+  status: Boolean!
   title: String
   description: String
   owner: User!
@@ -37,7 +37,7 @@ type Mutation {
   createPost(description: String, owner: ID!, filename: String!): CreatedPost!
   updatePost(
     id: ID!
-    status: String
+    status: Boolean
     title: String
     description: String
     likes: [ID]

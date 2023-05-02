@@ -227,7 +227,7 @@ const userPutPost = (
       .set("Content-type", "application/json")
       .set("Authorization", `Bearer ${token}`)
       .send({
-        query: `mutation UpdatePost($updatePostId: ID!, $status: String!, $title: String, $description: String) {
+        query: `mutation UpdatePost($updatePostId: ID!, $status: Boolean!, $title: String, $description: String) {
           updatePost(id: $updatePostId, status: $status, title: $title, description: $description) {
             id
             status
@@ -278,7 +278,7 @@ const wrongUserPutPost = (
       .set("Content-type", "application/json")
       .set("Authorization", `Bearer ${token}`)
       .send({
-        query: `mutation UpdatePost($updatePostId: ID!, $status: String!, $title: String, $description: String) {
+        query: `mutation UpdatePost($updatePostId: ID!, $status: Boolean!, $title: String, $description: String) {
           updatePost(id: $updatePostId, status: $status, title: $title, description: $description) {
             id
             status

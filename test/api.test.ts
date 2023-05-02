@@ -46,7 +46,7 @@ describe("Testing user interactions in graphql api", () => {
   beforeAll(async () => {
     console.log(process.env.DATABASE_URL);
     await mongoose.connect(process.env.DATABASE_URL as string);
-  });
+  }, 10000);
   // Disconnect from database
   afterAll(async () => {
     await mongoose.connection.close();
@@ -160,7 +160,7 @@ describe("Testing user interactions in graphql api", () => {
   // test update post
   it("should update post", async () => {
     let updatedPostData: PostTest = {
-      status: "found",
+      status: true,
       title: "Harmaasieppo",
       description: "Updated description " + randomstring.generate(50),
     };
@@ -170,7 +170,7 @@ describe("Testing user interactions in graphql api", () => {
   // test wrong user update post
   it("should not update post", async () => {
     let updatedPostData: PostTest = {
-      status: "found",
+      status: true,
       title: "Not allowed to update",
       description: "Test description " + randomstring.generate(50),
     };
@@ -180,7 +180,7 @@ describe("Testing user interactions in graphql api", () => {
   // test admin update post
   it("admin should update post", async () => {
     let updatedPostData: PostTest = {
-      status: "found",
+      status: true,
       title: "Admin has edited this post",
       description: "Updated description " + randomstring.generate(50),
     };

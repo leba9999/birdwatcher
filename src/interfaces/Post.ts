@@ -3,7 +3,7 @@ import { Types, Document } from "mongoose";
 import { Comment } from "./Comment";
 
 interface Post extends Document {
-  status: string;
+  status: boolean;
   title: string;
   description: string;
   likes: [Types.ObjectId | User];
@@ -15,7 +15,7 @@ interface Post extends Document {
 
 interface PostTest {
   id?: string;
-  status?: string;
+  status?: boolean;
   title?: string;
   description?: string;
   likes?: [Types.ObjectId | User];

@@ -3,7 +3,7 @@ import { User } from "./User";
 
 interface Post {
   id: string;
-  status: string;
+  status: boolean;
   title: string;
   description: string;
   likes: [User];
