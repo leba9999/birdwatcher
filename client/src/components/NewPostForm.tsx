@@ -7,7 +7,7 @@ import {UserContext} from "../util/UserContext";
 import Dropzone from './dropzone';
 import UploadMessageResponse from '../Interfaces/UploadMessageResponse';
 
-function Post() {
+function NewPost() {
     
     const userFromContext = useContext(UserContext);
 
@@ -107,7 +107,7 @@ function Post() {
 
     const handleInput = () =>{
         setDesc(descRef.current?.value as string)
-      }
+    }
     return (
       <>
         {
@@ -144,5 +144,5 @@ function Post() {
     );
   }
   
-  export default Post;
+  export default NewPost;
   

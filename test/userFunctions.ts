@@ -15,15 +15,6 @@ const getUser = (url: string | Function): Promise<UserTest[]> => {
             id
             email
             username
-            likes {
-              id
-            }
-            posts {
-              id
-            }
-            comments {
-              id
-            }
             createdAt
           }
         }`,
@@ -37,9 +28,6 @@ const getUser = (url: string | Function): Promise<UserTest[]> => {
           expect(users[0]).toHaveProperty("id");
           expect(users[0]).toHaveProperty("username");
           expect(users[0]).toHaveProperty("email");
-          expect(users[0]).toHaveProperty("likes");
-          expect(users[0]).toHaveProperty("comments");
-          expect(users[0]).toHaveProperty("posts");
           expect(users[0]).toHaveProperty("createdAt");
           resolve(response.body.data.users);
         }
@@ -148,15 +136,6 @@ const getSingleUser = (
             email
             username
             createdAt
-            comments {
-              id
-            }
-            likes {
-              id
-            }
-            posts {
-              id
-            }
           }
         }`,
         variables: {
@@ -172,9 +151,6 @@ const getSingleUser = (
           expect(user).toHaveProperty("username");
           expect(user).toHaveProperty("email");
           expect(user).toHaveProperty("createdAt");
-          expect(user).toHaveProperty("comments");
-          expect(user).toHaveProperty("likes");
-          expect(user).toHaveProperty("posts");
           resolve(response.body.data.userById);
         }
       });

@@ -6,6 +6,7 @@ type Post {
   title: String
   description: String
   likes: [User]
+  comments: [Comment]
   owner: User!
   createdAt: DateTime!
   filename: String!
@@ -40,6 +41,7 @@ type Mutation {
     title: String
     description: String
     likes: [ID]
+    comments: [ID]
     filename: String
   ): Post!
   deletePost(id: ID!): Post!

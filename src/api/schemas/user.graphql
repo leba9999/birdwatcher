@@ -3,9 +3,6 @@ type User {
   username: String!
   email: String!
   createdAt: String!
-  likes: [Post]
-  comments: [Comment]
-  posts: [Post]
 }
 
 type OutputUser {
@@ -40,9 +37,6 @@ input UserModify {
   username: String
   email: String
   password: String
-  likes: [ID]
-  comments: [ID]
-  posts: [ID]
 }
 
 type Query {

@@ -9,6 +9,12 @@ export default {
       const foundPosts = await postModel
         .find()
         .populate("likes")
+        .populate({
+          path: "comments",
+          populate: {
+            path: "owner",
+          },
+        })
         .populate("owner");
       return foundPosts;
     },
@@ -16,6 +22,12 @@ export default {
       return await postModel
         .findById(args.id)
         .populate("likes")
+        .populate({
+          path: "comments",
+          populate: {
+            path: "owner",
+          },
+        })
         .populate("owner");
     },
     postByOwner: async (_parent: undefined, args: { userId: string }) => {
@@ -24,6 +36,12 @@ export default {
           owner: args.userId,
         })
         .populate("likes")
+        .populate({
+          path: "comments",
+          populate: {
+            path: "owner",
+          },
+        })
         .populate("owner");
     },
   },
@@ -57,6 +75,7 @@ export default {
       return await postModel
         .findByIdAndUpdate(args.id, args, { new: true })
         .populate("likes")
+        .populate("comments")
         .populate("owner");
     },
     deletePost: async (

@@ -2,18 +2,26 @@ import React, { useCallback, useState } from 'react';
 import { Post } from '../Interfaces/Post';
 import classes from './PostCard.module.css';
 import { Oval } from 'react-loader-spinner';
+import { Link } from 'react-router-dom';
 
 type Props = {
     post : Post;
-  };
+};
 
 function PostCard({ post } : Props ) {
     const [loading, setLoading] = useState(true);
 
     return (
     <div className={classes.box}>
-        <p>Posted by: {post.owner.username} {new Date(post.createdAt).toLocaleDateString()}</p>
-        <h3>{post.title}</h3>
+        <Link className={classes.link} to={`/user/${post.owner.id}`}>
+            <p>Posted by: {post.owner.username} {new Date(post.createdAt).toLocaleDateString()}</p>
+        </Link>
+        <Link className={classes.link} to={`/${post.id}`}>
+        <h3 className={classes.title}>
+            <i className="fa-solid fa-magnifying-glass"></i>
+            {post.title}
+        </h3>
+        </Link>
         <div className={classes.imageBox}>
             <img className={classes.imagePreview} onLoadedData={()=>setLoading(false)} onLoad={()=>setLoading(false)} src={`http://localhost:5000/uploads/${post.filename}.jpg`} alt={post.filename}/>
             {

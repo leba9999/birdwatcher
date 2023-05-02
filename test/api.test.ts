@@ -44,6 +44,7 @@ import { Express } from "express-serve-static-core";
 describe("Testing user interactions in graphql api", () => {
   // Connect to database
   beforeAll(async () => {
+    console.log(process.env.DATABASE_URL);
     await mongoose.connect(process.env.DATABASE_URL as string);
   });
   // Disconnect from database

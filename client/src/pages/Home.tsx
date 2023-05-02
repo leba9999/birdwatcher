@@ -13,9 +13,6 @@ function Home() {
 
   useEffect(()=>{
     setLoading(true);
-    setTimeout(()=>{
-      setLoading(false);
-    }, 1000);
     fetch('http://localhost:5000/graphql', {
       method: 'POST',
       headers: {

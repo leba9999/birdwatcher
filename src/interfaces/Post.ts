@@ -7,6 +7,7 @@ interface Post extends Document {
   title: string;
   description: string;
   likes: [Types.ObjectId | User];
+  comments: [Types.ObjectId | Comment];
   owner: Types.ObjectId | User;
   createdAt: Date;
   filename: string;
@@ -18,6 +19,7 @@ interface PostTest {
   title?: string;
   description?: string;
   likes?: [Types.ObjectId | User];
+  comments?: [Types.ObjectId | Comment];
   owner?: Types.ObjectId | User;
   createdAt?: Date;
   filename?: string;

@@ -4,7 +4,7 @@ import { UserContext } from "./util/UserContext";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NewPost from "./pages/NewPost";
-import Post from "./pages/Post";
+import PostPage from "./pages/PostPage";
 import Profile from "./pages/Profile";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoadingLayout from "./components/LoadingLayout";
@@ -51,8 +51,9 @@ function Router() {
                             <Routes>
                                 <Route path="/" element={<App/>}>
                                     <Route index element={<Home/>}/>
-                                    <Route path={"/:id"} element={<Post/>}/>
+                                    <Route path={"/:id"} element={<PostPage/>}/>
                                     <Route path={"/profile"} element={<Profile/>}/>
+                                    <Route path={"/user/:id"} element={<Profile/>}/>
                                     <Route path={"/new"} element={<NewPost/>}/>
                                 </Route>
                             </Routes> :

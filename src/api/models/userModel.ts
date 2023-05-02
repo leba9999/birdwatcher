@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import {User} from '../../interfaces/User';
+import mongoose from "mongoose";
+import { User } from "../../interfaces/User";
 
 const userModel = new mongoose.Schema<User>({
   username: {
@@ -13,8 +13,8 @@ const userModel = new mongoose.Schema<User>({
   },
   role: {
     type: String,
-    enum: ['user', 'admin'],
-    default: 'user',
+    enum: ["user", "admin"],
+    default: "user",
   },
   password: {
     type: String,
@@ -25,29 +25,16 @@ const userModel = new mongoose.Schema<User>({
     default: Date.now,
     required: true,
   },
-  likes: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Post',
-  }],
-  comments: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Comment',
-  }],
-  posts: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Post',
-  }],
 });
 
 // Duplicate the ID field.
-userModel.virtual('id').get(function () {
+userModel.virtual("id").get(function () {
   return this._id.toHexString();
 });
 
 // Ensure virtual fields are serialised.
-userModel.set('toJSON', {
+userModel.set("toJSON", {
   virtuals: true,
 });
 
-
-export default mongoose.model<User>('User', userModel);
+export default mongoose.model<User>("User", userModel);

@@ -32,7 +32,7 @@ const Navi=()=> {
                             <i className="fa-solid fa-house burgericons"></i>
                             Home
                         </Link>
-                        <Link  className="bm-item" to="/post">
+                        <Link  className="bm-item" to="/new">
                             <i className="fa-solid fa-arrow-up-from-bracket burgericons"></i>
                             Post
                         </Link>
@@ -68,7 +68,7 @@ const Navi=()=> {
                   </Link>
               </li>
               <li>
-                  <Link  className="navlink" to="/post">
+                  <Link  className="navlink" to="/new">
                     <i className="fa-solid fa-arrow-up-from-bracket navbaricons"></i>
                       Post
                   </Link>

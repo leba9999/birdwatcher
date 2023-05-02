@@ -2,11 +2,16 @@ import { Comment } from "../../interfaces/Comment";
 import { TokenUser } from "../../interfaces/User";
 import commentModel from "../models/commentModel";
 import { GraphQLError } from "graphql";
+import postModel from "../models/postModel";
 
 export default {
   Query: {
     comments: async () => {
-      return await commentModel.find().populate("post").populate("owner");
+      const array = await commentModel
+        .find()
+        .populate("post")
+        .populate("owner");
+      return array;
     },
     commentById: async (_parent: undefined, args: { id: string }) => {
       return await commentModel
@@ -41,6 +46,11 @@ export default {
         }
         const comment = await commentModel.create(args);
         const savedComment = await comment.save();
+        let post = await postModel.findById(args.post);
+        post.comments.push(savedComment.id);
+        const updated = await postModel.findByIdAndUpdate(post.id, post, {
+          new: true,
+        });
         await savedComment.populate("post");
         return await savedComment.populate("owner");
       } catch (err) {
@@ -84,6 +94,12 @@ export default {
           });
         }
       }
+      let post = await postModel.findById(comment.post);
+      post.comments.splice(post.comments.indexOf(comment.id), 1);
+      const updated = await postModel.findByIdAndUpdate(post.id, post, {
+        new: true,
+      });
+
       return await commentModel.findByIdAndDelete(args.id);
     },
   },

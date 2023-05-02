@@ -2,13 +2,28 @@
     max-width: 40em;
     width: 100%;
     height: fit-content;
-    padding: 1em 2em 1em 2em;
+    padding: 0.2em 2em 0.5em 2em;
     background-color: #2d2d30;
     color: #c7c2c2;
     border-radius: 8px;
     text-align: left;
     margin: auto;
     margin-bottom: 1em;
+}
+.title{
+    border-bottom: #c7c2c2 solid 3px;
+}
+.link{
+    color: #c7c2c2;
+    text-decoration: none;
+}
+.link:hover{
+    color: #c7c2c2;
+    text-decoration: none;
+}
+.link:active{
+    color: #817d7d;
+    text-decoration: none;
 }
 .imagePreview{
     width: 100%;
