@@ -149,7 +149,7 @@ const RegisterForm = () => {
                 </Form.Group>
                 <div>
                     <Button className={classes.formButton} variant="primary" type="submit">
-                        Login
+                        Register
                     </Button>
                     <Button className={classes.formButton} variant="danger" type="button" onClick={handleCancel}>
                         Cancel

@@ -1,10 +1,8 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import LoadingLayout from "../components/LoadingLayout";
-// TODO: own css file
-import classes from "./Profile.module.css";
+import classes from "./EditProfile.module.css";
 import { UserContext } from "../util/UserContext";
 import { InputUser, User } from "../Interfaces/User";
-import { Post } from "../Interfaces/Post";
 import Form from 'react-bootstrap/Form';
 import {Button, Modal} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -227,21 +225,21 @@ function EditProfile() {
       <div className={classes.box}>
         <Form ref={formRef} className={classes.Form} noValidate validated={validated} onSubmit={handleSubmit}>
           <Form.Group className={classes.formGroup}  controlId="formBasicFile">
-            {
-                selectedFile ? 
-                <>
-                    <img className={classes.imagePreview} src={URL.createObjectURL(selectedFile)} alt="preview" />
-                    <Button variant='danger' onClick={handleRemoveFile}>Remove</Button>
-                </>
-                :
-                <div className={`${classes.dropzone}`}>
-                  <Dropzone onFileUpload={handleFileUpload} />
-              </div>
-            }
+          {
+              selectedFile ? 
+              <>
+                  <img className={classes.imagePreview} src={URL.createObjectURL(selectedFile)} alt="preview" />
+                  Image: {selectedFile.name} <Button variant='danger' size='sm' onClick={handleRemoveFile}>Remove</Button>
+              </>
+              :
+              <div className={`${classes.dropzone}`}>
+              <Dropzone onFileUpload={handleFileUpload} />
+          </div>
+          }
           </Form.Group>
           <Form.Group className={classes.formGroup} controlId="formBasicEmail">
-              <Form.Label>Email</Form.Label>
-              <Form.Control className={registerError ? `${classes.formInput} ${classes.invalid}` : `${classes.formInput}`} autoComplete={"email"} pattern={pattern} value={email} onChange={handleInput} type="email" placeholder="Enter email" ref={emailRef} />
+              <Form.Label>Email:</Form.Label>
+              <Form.Control className={registerError ? `${classes.formTextInput} ${classes.invalid}` : `${classes.formTextInput}`} autoComplete={"email"} pattern={pattern} value={email} onChange={handleInput} type="email" placeholder="Enter email" ref={emailRef} />
               <Form.Control.Feedback>Email is valid</Form.Control.Feedback>
               <Form.Control.Feedback type="invalid">
                   Email is invalid!
@@ -251,29 +249,29 @@ function EditProfile() {
               </Form.Text> : null}
           </Form.Group>
           <Form.Group className={classes.formGroup} controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control className={ passwordMatchError ? `${classes.formInput} ${classes.invalid}` : `${classes.formInput}`} autoComplete={"current-password"} type="password" placeholder="Password" ref={passwordRef} />
+              <Form.Label>Password:</Form.Label>
+              <Form.Control className={ passwordMatchError ? `${classes.formTextInput} ${classes.invalid}` : `${classes.formTextInput}`} autoComplete={"current-password"} type="password" placeholder="Password" ref={passwordRef} />
               {passwordMatchError ? <Form.Text className={classes.invalidText}>
                   Passwords does not match!
               </Form.Text> : null}
           </Form.Group>
           <Form.Group className={classes.formGroup} controlId="formBasicRePassword">
-              <Form.Label>Password Again</Form.Label>
-              <Form.Control className={ passwordMatchError ? `${classes.formInput} ${classes.invalid}` : `${classes.formInput}`} autoComplete={"current-password"} type="password" placeholder="Re Password" ref={rePasswordRef} />
+              <Form.Label>Password Again:</Form.Label>
+              <Form.Control className={ passwordMatchError ? `${classes.formTextInput} ${classes.invalid}` : `${classes.formTextInput}`} autoComplete={"current-password"} type="password" placeholder="Re Password" ref={rePasswordRef} />
               {passwordMatchError ? <Form.Text className={classes.invalidText}>
                   Passwords does not match!
               </Form.Text> : null}
           </Form.Group>
-          <div>
+          <div className={classes.buttons}>
               <Button className={classes.formButton} variant="primary" type="submit">
                   Update
               </Button>
-              <Button className={classes.formButton} variant="warning" type="button" onClick={handleCancel}>
+              <Button className={classes.formButton} size='sm' variant="warning" type="button" onClick={handleCancel}>
                   Cancel
               </Button>
           </div>
           <h3>Delete account!</h3>
-          <Button className={classes.formButton} variant="danger" type="button" onClick={handleShow}>
+          <Button className={classes.formButton} size='sm' variant="danger" type="button" onClick={handleShow}>
               Delete account
           </Button>
         </Form>

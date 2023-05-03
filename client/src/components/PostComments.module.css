@@ -1,0 +1,115 @@
+.title{
+    margin: 0;
+    margin-top: 1em;
+    padding-bottom: 0.2em;
+    border-bottom: #817d7d solid 1px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.titleIcon {
+    margin-right: 0.3em;
+}
+.profilePic{
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 100%;
+    margin-right: 0.5em;
+}
+.postedby {
+    align-items: center;
+}
+.comment {
+    background-color: #1e1e2057;
+    border-radius: 0em 0em 0.5em 0.5em;
+    padding: 0.2em;
+}
+.link{
+    color: #94aacc;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0;
+    cursor: pointer;
+}
+.link:hover{
+    color: #70819b;
+    text-decoration: none;
+}
+.link:active{
+    color: #99b6e1;
+    text-decoration: none;
+}
+.text {
+    margin: 0;
+    color: #c7c2c2;
+}
+.loading{
+    color: #c7c2c2;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: fit-content;
+    position: absolute;
+    top: 40%;
+    left: 40%;
+    z-index: 100;
+}
+.loading > p {
+    display: inline-block;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    top: 65px
+}
+.formTextArea{
+    background-color: rgba(0, 0, 0, 0.3);
+    border-color: black;
+    color: #c7c2c2;
+    height: 5em;
+}
+.formTextArea:focus{
+    background-color: rgba(0, 0, 0, 0.4);
+    border-color: black;
+    color: #c7c2c2;
+}
+.delete{
+    color: #fb3e3e;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0;
+    cursor: pointer;
+    padding: 0.25em 0em;
+}
+.delete:hover{
+    color: #bd2e2e;
+    text-decoration: none;
+}
+.delete:active{
+    color: #ff7676;
+    text-decoration: none;
+}
+.formDetails{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0.2em 0;
+}
+
+.cancellink{
+    color: #ccc794;
+    text-decoration: none;
+    display: inline-block;
+    margin: 0;
+    cursor: pointer;
+}
+.cancellink:hover{
+    color: #9b9b70;
+    text-decoration: none;
+}
+.cancellink:active{
+    color: #e1df99;
+    text-decoration: none;
+}

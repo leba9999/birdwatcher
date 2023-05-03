@@ -1,14 +1,13 @@
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { Post } from '../Interfaces/Post';
-// TODO create css class for this component
-import classes from './PostCard.module.css';
+import classes from './PostView.module.css';
 import { Oval } from 'react-loader-spinner';
 import { Link, useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
 import { UserContext } from '../util/UserContext';
 import { NewComment } from '../Interfaces/Comment';
-import PostComments from './Comments';
+import PostComments from './PostComments';
 
 type Props = {
     post : Post;
@@ -31,6 +30,7 @@ function PostView({ post, reload } : Props ) {
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>){
         const form = formRef.current;
+        setLoading(true);
         if(!event){
             return;
         }
@@ -38,6 +38,7 @@ function PostView({ post, reload } : Props ) {
         if(form){
             if (form.checkValidity() === false) {
                 setValidated(true);
+                setLoading(false);
                 return;
             }
             setValidated(false);
@@ -74,6 +75,7 @@ function PostView({ post, reload } : Props ) {
             }).then(async response => {
                 const resJson = await response.json();
                 console.log(resJson);
+                setCommentText("");
                 if(!resJson.errors){
                     //handleShow();
                 }else{
@@ -82,6 +84,7 @@ function PostView({ post, reload } : Props ) {
             }).catch((error) => {
                 console.error('Error:', error);
             }).finally(() => {
+                setLoading(false);
                 reload();
             });
         }
@@ -92,12 +95,20 @@ function PostView({ post, reload } : Props ) {
     }
     console.log(post.createdAt)
     return (
-    <div className={classes.box}>
-        <Link className={classes.link} to={`/user/${post.owner.id}`}>
-            <p>Posted by: {post.owner.username} {new Date(post.createdAt).toLocaleDateString()}</p>
-        </Link>
+    <>
+    <Link className={classes.link} to={`/user/${post.owner.id}`}>
+        <div className={classes.postedby}>
+            <img className={classes.profilePic} src={`http://localhost:5000/uploads/${post.owner.filename}_thumb.png`}/>
+            {post.owner.username} {new Date(post.createdAt).toLocaleDateString()}
+        </div>
+    </Link>
         <h3 className={classes.title}>
-            <i className="fa-solid fa-magnifying-glass"></i>
+                {
+                    post.status ? 
+                    <i className={`${classes.titleIcon} ${classes.foundIcon} fa-solid fa-circle-check`}></i>:
+                    <i className={`${classes.titleIcon} fa-solid fa-magnifying-glass`}></i>
+
+                }
             {post.title}
         </h3>
         <div className={classes.imageBox}>
@@ -119,31 +130,41 @@ function PostView({ post, reload } : Props ) {
             </div> : null
             }
         </div>
-        <p>{post.likes.length} likes</p>
-        Description:
-        <p>{post.description}</p>
+        {
+            post.description.length ? 
+            <div>    
+                <p className={classes.text}>Description:</p>
+                <p className={classes.description}>{post.description}</p>
+            </div>
+            :null
+        }
         {
             post.owner.id === userFromContext?.user?.user.id ? 
-            <Button className={classes.formButton} variant="success" onClick={()=>navigate(`/edit/${post.id}`)}>
+            <Button className={classes.editButton} variant="success" size="sm" onClick={()=>navigate(`/edit/${post.id}`)}>
                 Edit post
             </Button>
             : null
         }
+        <p className={classes.details} >
+            <i className={`${classes.titleIcon} fa-solid fa-comments fa-lg`}></i> - {post.comments.length} Comments
+        </p>
         <Form ref={formRef} className={classes.Form} noValidate validated={validated} onSubmit={handleSubmit}>
             <Form.Group className={classes.formGroup} controlId="formBasicComment">
                 <Form.Label className={classes.text}>Add comment:</Form.Label>
                 <Form.Control className={`${classes.formTextArea} ${classes.formInput}`} name="comment" maxLength={CommentMaxLength} required as="textarea" type="text" placeholder="Add a comment..." value={commentText} onChange={handleInput} ref={commentRef} />
-                <Form.Text className={classes.text}>{commentText.length}/{CommentMaxLength}</Form.Text>
-                <Form.Control.Feedback type="invalid">
+                <Form.Control.Feedback  type="invalid">
                         Text for comment is required.
-                    </Form.Control.Feedback>
+                </Form.Control.Feedback>
+                <div className={classes.formDetails}>
+                    <Form.Text className={classes.text}>{commentText.length}/{CommentMaxLength}</Form.Text>
+                    <Button className={classes.formButton} size="sm" variant="primary" type="submit">
+                        Comment
+                    </Button>
+                </div>
             </Form.Group>
-            <Button className={classes.formButton} variant="primary" type="submit">
-                Comment
-            </Button>
         </Form>
         <PostComments comments={post.comments} reload={reload}/>
-    </div>
+    </>
     );
   }
   

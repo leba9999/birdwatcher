@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
-import classes from './PostForm.module.css';
+import classes from './EditPostForm.module.css';
 import Form from 'react-bootstrap/Form';
 import {Button} from "react-bootstrap";
 import LoadingLayout from "./LoadingLayout";
@@ -70,27 +70,28 @@ function EditPostForm({ post, reload } : Props) {
                 setLoading(false);
                 return;
             }
-            const formData = new FormData();
-            formData.append('bird', selectedFile);
-            const uploadResponse = await fetch('http://localhost:5000/api/v1/upload', {
-                method: 'POST',
-                headers: {
-                    'Authorization':  `Bearer ${userFromContext?.user?.token}`,
-                },
-                body: formData
-            });
-            const uploadData = await uploadResponse.json() as unknown as UploadMessageResponse;
             const updatedPost = post;
+            if(selectedFile && !selectedFile.name.includes(updatedPost?.filename as string)){
+                const formData = new FormData();
+                formData.append('bird', selectedFile);
+                const uploadResponse = await fetch('http://localhost:5000/api/v1/upload', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization':  `Bearer ${userFromContext?.user?.token}`,
+                    },
+                    body: formData
+                });
+                const uploadData = await uploadResponse.json() as unknown as UploadMessageResponse;
+                updatedPost.filename = uploadData.data.filename;
+            }
             updatedPost.description = desc;
             updatedPost.status = status;
             updatedPost.title = titleRef.current?.value as string;
-            updatedPost.filename = uploadData.data.filename;
 
             console.log(post);
             console.log(updatedPost);
-            console.log(uploadData);
 
-            if(uploadData.data){
+            if(updatedPost){
                 fetch('http://localhost:5000/graphql', {
                     method: 'POST',
                     headers: {
@@ -129,6 +130,7 @@ function EditPostForm({ post, reload } : Props) {
                     setUploadError(true);
                 }).finally(() => {
                     setLoading(false);
+                    navigate(-1)
                 });
             }
         }
@@ -172,8 +174,12 @@ function EditPostForm({ post, reload } : Props) {
     };
 
     const handleInput = () =>{
-        setTitle(titleRef.current?.value as string);
         setDesc(descRef.current?.value as string);
+    }
+    const handleTitleInput = () =>{
+        setTitle(titleRef.current?.value as string);
+    }
+    const handleStatusInput = () =>{
         setStatus(statusRef.current?.checked as boolean);
     }
     return (
@@ -187,7 +193,7 @@ function EditPostForm({ post, reload } : Props) {
                     selectedFile ? 
                     <>
                         <img className={classes.imagePreview} src={URL.createObjectURL(selectedFile)} alt="preview" />
-                        <Button variant='danger' onClick={handleRemoveFile}>Remove</Button>
+                        Image: {selectedFile.name} <Button variant='danger' size='sm' onClick={handleRemoveFile}>Remove</Button>
                     </>
                     :
                     <div className={`${classes.dropzone} ${uploadError ? classes.invalid : '' } `}>
@@ -200,27 +206,34 @@ function EditPostForm({ post, reload } : Props) {
             </Form.Group>
             
             <Form.Group className={classes.formGroup} controlId="formBasicStatus">
-                <Form.Label className={classes.text}>Status: {statusRef.current?.checked ? "Found" : "Unknown"}</Form.Label>
-                <Form.Check type="switch"id="custom-switch" label="Change status" ref={statusRef} checked={status} onChange={handleInput} />
+                <Form.Label className={classes.text}>Status: </Form.Label>
+                <Form.Check type="switch"id="custom-switch" className={classes.switch} label={statusRef.current?.checked ? "Found" : "Unknown"} ref={statusRef} checked={status} onChange={handleStatusInput} />
             </Form.Group>
             {
                 statusRef.current?.checked ? 
                 <Form.Group className={classes.formGroup} controlId="formBasicTitle">
-                    <Form.Label className={classes.text}>Title</Form.Label>
-                    <Form.Control className={classes.formInput} name="title" type="text" placeholder="Enter title" value={title} onChange={handleInput} ref={titleRef}/>
+                    <Form.Label className={classes.text}>Title:</Form.Label>
+                    <Form.Control className={classes.formTextInput} name="title" type="text" placeholder="Enter title" value={title} onChange={handleTitleInput} ref={titleRef}/>
                 </Form.Group> : null
             }
             <Form.Group className={classes.formGroup} controlId="formBasicDesc">
-                <Form.Label className={classes.text}>Description</Form.Label>
+                <Form.Label className={classes.text}>Description:</Form.Label>
                 <Form.Control className={`${classes.formTextArea} ${classes.formInput}`} name="desc" maxLength={descMaxLength} as="textarea" type="text" placeholder="Enter description" value={desc} onChange={handleInput} ref={descRef} />
                 <Form.Text className={classes.text}>{desc.length}/{descMaxLength}</Form.Text>
             </Form.Group>
-            <Button className={classes.formButton} variant="primary" type="submit">
-                Update
-            </Button>
-            <Button className={classes.formButton} variant="danger" type="button" onClick={handleDelete}>
-                Delete
-            </Button>
+            <div className={classes.formButtons}>
+                <div className={classes.formButtons}>
+                    <Button className={classes.formButton} variant="primary" type="submit">
+                        Update post
+                    </Button>
+                    <Button className={classes.formButton} size='sm' variant="warning" onClick={()=>navigate(-1)}>
+                        Cancel
+                    </Button>
+                </div>
+                <Button className={classes.formButton} size='sm' variant="danger" type="button" onClick={handleDelete}>
+                    Delete
+                </Button>
+            </div>
         </Form>
       </>
     );

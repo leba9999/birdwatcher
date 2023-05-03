@@ -3,9 +3,9 @@ import { UpdateComment } from "../Interfaces/Comment";
 import { UserContext } from "../util/UserContext";
 import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
-// TODO create css class for this component
-import classes from './PostCard.module.css';
+import classes from './PostComments.module.css';
 import { Comment } from "../Interfaces/Comment";
+import { Link } from "react-router-dom";
 
 type Props = {
     comments : Comment[];
@@ -119,6 +119,7 @@ function PostComments({ comments, reload } : Props ) {
     }
     const handleUpdateInput = () =>{
         setUpdatecommentText(updatecommentRef.current?.value as string)
+        setValidated(false);
     }
     return (
     <div>
@@ -127,43 +128,53 @@ function PostComments({ comments, reload } : Props ) {
             edit[index] = false;
             return (
                 <div key={comment.id}>
-                    {
-                        !editComment[index] ?
-                        <>
-                            <p>{comment.owner.username} {new Date(comment.createdAt).toLocaleDateString()}</p>
-                            <p>{comment.text}</p> 
-                            {
+                    <div className={classes.title}>
+                        <Link className={classes.link} to={`/user/${comment.owner.id}`}>
+                            <div className={classes.postedby}>
+                                <img className={classes.profilePic} src={`http://localhost:5000/uploads/${comment.owner.filename}_thumb.png`}/>
+                                {comment.owner.username} {new Date(comment.createdAt).toLocaleDateString()}
+                            </div>
+                        </Link>
+                        {
+                            !editComment[index] ?
                                 comment.owner.id === userFromContext?.user?.user.id ?
-                                <p onClick={()=>{
+                                <p className={classes.link} onClick={()=>{
                                     edit[index]=true; 
                                     setEditComment(edit);
                                     setUpdatecommentText(comment.text);
                                     setCommentID(comment.id!);
                                     }}>edit</p> : null
-
-                            }
-                        </>
+                            : 
+                            <p className={`${classes.cancellink}`} onClick={reload}>cancel</p>
+                        }
+                    </div>
+                    { 
+                    !editComment[index] ?
+                        <div className={classes.comment}>
+                            {comment.text}
+                        </div>
                         :
                         <Form ref={updateformRef} className={classes.Form} noValidate validated={validated} onSubmit={handleUpdateSubmit}>
                             <Form.Group className={classes.formGroup} controlId="formBasicComment">
-                                <Form.Label className={classes.text}>Add comment:</Form.Label>
+                                <Form.Label className={classes.text}>Edit comment:</Form.Label>
                                 <Form.Control className={`${classes.formTextArea} ${classes.formInput}`} required name="comment" maxLength={CommentMaxLength} as="textarea" type="text" placeholder="Add a comment..." value={updatecommentText} onChange={handleUpdateInput} ref={updatecommentRef} />
-                                <Form.Text className={classes.text}>{updatecommentText.length}/{CommentMaxLength}</Form.Text>
                                 <Form.Control.Feedback type="invalid">
                                     Text for comment is required.
                                 </Form.Control.Feedback>
+                                <div className={classes.formDetails}>
+                                    <Form.Text className={classes.text}>{updatecommentText.length}/{CommentMaxLength}</Form.Text>
+                                    <div>
+                                        <Button className={classes.formButton} size="sm" variant="primary" type="submit">
+                                            Update
+                                        </Button>
+                                        <p className={classes.delete} onClick={handleCommentDelete}>
+                                            Delete
+                                        </p>
+                                    </div>
+                                </div>
                             </Form.Group>
-                            <Button className={classes.formButton} variant="primary" type="submit">
-                                Comment
-                            </Button>
-                            <Button className={classes.formButton} variant="warning" type="button" onClick={reload}>
-                                Cancel
-                            </Button>
-                            <Button className={classes.formButton} variant="danger" type="button" onClick={handleCommentDelete}>
-                                Delete
-                            </Button>
                         </Form>
-                    }               
+                    }
                 </div>
             );
         })}

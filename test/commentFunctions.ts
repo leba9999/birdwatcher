@@ -26,6 +26,7 @@ const getComments = (url: string | Function): Promise<CommentTest[]> => {
         if (err) {
           reject(err);
         } else {
+          console.log(response.body);
           const comments = response.body.data.comments;
           expect(comments).toBeInstanceOf(Array);
           expect(comments[0]).toHaveProperty("id");

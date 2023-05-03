@@ -85,6 +85,15 @@ const makeThumbnail = async (
       .resize(160, 160)
       .png()
       .toFile(`uploads/${filename}_thumb.png`);
+    await sharp(req.file?.path)
+      .metadata()
+      .then(
+        async ({ width }) =>
+          await sharp(req.file?.path)
+            .resize(Math.round(width * 0.5))
+            .png()
+            .toFile(`uploads/${filename}_medium.png`)
+      );
     next();
   } catch (error) {
     next(new CustomError("Thumbnail not created", 500));

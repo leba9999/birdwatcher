@@ -8,7 +8,7 @@
     color: #c7c2c2;
     border-radius: 8px;
     text-align: left;
-    margin: 10% auto 5% auto;
+    margin: 2em auto 2em auto;
 }
 
 .filter{
@@ -48,4 +48,20 @@
     font-weight: bold;
     padding: 0.5em;
     color: black;
+}
+.loading{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    color: #c7c2c2;
+    margin: auto;
+    text-align: center;
+    width: fit-content;
+}
+.loading > p {
+    display: inline-block;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    top: 65px
 }

@@ -1,5 +1,6 @@
 import { Post } from "../../interfaces/Post";
 import { TokenUser } from "../../interfaces/User";
+import commentModel from "../models/commentModel";
 import postModel from "../models/postModel";
 import { GraphQLError } from "graphql";
 
@@ -94,6 +95,7 @@ export default {
           });
         }
       }
+      await commentModel.find({ post: args.id }).deleteMany();
       return await postModel.findByIdAndDelete(args.id);
     },
   },

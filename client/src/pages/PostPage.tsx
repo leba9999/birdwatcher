@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react';
 import PostView from '../components/PostView';
 import classes from './Post.module.css';
 import { Post } from '../Interfaces/Post';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+import LoadingLayout from '../components/LoadingLayout';
 
 function PostPage() {
-  
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const { id } = useParams()
+  const [notFound, setNotFound] = useState(false);
 
   const [reload, setReload] = useState(false);
 
@@ -37,11 +40,13 @@ function PostPage() {
               owner {
                 id
                 username
+                filename
               }
             }
             owner {
               id
               username
+              filename
             }
             createdAt
             filename
@@ -56,6 +61,10 @@ function PostPage() {
       if(resJson){
         console.log(resJson);
         setPost(resJson);
+      } else if (!resJson) {
+        setNotFound(true);
+      } else{
+        navigate(-1);
       }
     }).catch((error) => {
       console.error('Error:', error);
@@ -65,12 +74,23 @@ function PostPage() {
   },[reload])
 
     return (
-      <div className={classes.box}>
+      <>
         {
-          post ?
-          <PostView post={post} reload={()=>setReload(!reload)}/> : null
+            loading ? <LoadingLayout/> : null
         }
-      </div>
+        <div className={classes.box}>
+          {
+            notFound ? 
+            <>  
+              <h1>Post not found!</h1>
+              <Button onClick={()=>navigate(-1)}>Return</Button>
+            </> 
+            : 
+              post ?
+              <PostView post={post} reload={()=>setReload(!reload)}/> : null
+          }
+        </div>
+      </>
     );
   }
   

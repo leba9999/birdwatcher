@@ -43,58 +43,63 @@ function NewPost() {
                 setLoading(false);
                 return;
             }
-            const formData = new FormData();
-            formData.append('bird', selectedFile);
-            const uploadResponse = await fetch('http://localhost:5000/api/v1/upload', {
-                method: 'POST',
-                headers: {
-                    'Authorization':  `Bearer ${userFromContext?.user?.token}`,
-                },
-                body: formData
-            });
-            const uploadData = await uploadResponse.json() as unknown as UploadMessageResponse;
-            if(uploadData.data){
-                fetch('http://localhost:5000/graphql', {
+            try{
+                const formData = new FormData();
+                formData.append('bird', selectedFile);
+                const uploadResponse = await fetch('http://localhost:5000/api/v1/upload', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
                         'Authorization':  `Bearer ${userFromContext?.user?.token}`,
                     },
-                    body: JSON.stringify({
-                        query: `mutation CreatePost($owner: ID!, $filename: String!, $description: String) {
-                            createPost(owner: $owner, filename: $filename, description: $description) {
-                              id
-                              status
-                              title
-                              description
-                              owner {
-                                id
-                              }
-                              createdAt
-                              filename
-                            }
-                          }`,
-                        variables: {
-                          owner: userFromContext?.user?.user.id,
-                          filename: uploadData.data.filename,
-                          description: descRef.current?.value as string,
-                        },
-                      })
-                }).then(async response => {
-                    const resJson = await response.json();
-                    console.log(resJson);
-                    if(!resJson.errors){
-                        navigate("/"+resJson.data.createPost.id);
-                    }else{
-                        throw new Error('Dubplicate username or email!');
-                    }
-                }).catch((error) => {
-                    console.error('Error:', error);
-                    setUploadError(true);
-                }).finally(() => {
-                    setLoading(false);
+                    body: formData
                 });
-            }
+                const uploadData = await uploadResponse.json() as unknown as UploadMessageResponse;
+                if(uploadData.data){
+                    fetch('http://localhost:5000/graphql', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization':  `Bearer ${userFromContext?.user?.token}`,
+                        },
+                        body: JSON.stringify({
+                            query: `mutation CreatePost($owner: ID!, $filename: String!, $description: String) {
+                                createPost(owner: $owner, filename: $filename, description: $description) {
+                                  id
+                                  status
+                                  title
+                                  description
+                                  owner {
+                                    id
+                                  }
+                                  createdAt
+                                  filename
+                                }
+                              }`,
+                            variables: {
+                              owner: userFromContext?.user?.user.id,
+                              filename: uploadData.data.filename,
+                              description: descRef.current?.value as string,
+                            },
+                          })
+                    }).then(async response => {
+                        const resJson = await response.json();
+                        console.log(resJson);
+                        if(!resJson.errors){
+                            navigate("/"+resJson.data.createPost.id);
+                        }else{
+                            throw new Error('Dubplicate username or email!');
+                        }
+                    }).catch((error) => {
+                        console.error('Error:', error);
+                        setUploadError(true);
+                    }).finally(() => {
+                        setLoading(false);
+                    });
+                }
+            } catch(error){
+                console.log(error);
+                setLoading(false);
+            }  
         }
     }
 

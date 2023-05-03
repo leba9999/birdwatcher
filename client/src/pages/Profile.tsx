@@ -14,6 +14,7 @@ function Profile() {
 
   const [userData, setUserData] = useState<User | null>(null);
   const [postData, setPostData] = useState<Post[]>([]);
+  const [originalPosts, setOriginalPosts] = useState([] as Post[]);
   const [loading, setLoading] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [url, setUrl] = useState("");
@@ -69,6 +70,7 @@ function Profile() {
             owner {
               id
               username
+              filename
             }
             comments {
               id
@@ -85,6 +87,7 @@ function Profile() {
       if(resJson){
         console.log(resJson);
         setPostData(resJson);
+        setOriginalPosts(resJson);
       }
     }).catch((error) => {
       console.error('Error:', error);
@@ -96,6 +99,19 @@ function Profile() {
 
   function handleTabClick(index: number){
     setActiveIndex(index);
+    if(index === 0){
+      setPostData(originalPosts);
+    } else {
+      let newPosts = [] as Post[];
+      for (let i = 0; i < originalPosts?.length; i++) {
+        if(!originalPosts[i].status && index === 1){
+          newPosts.push(originalPosts[i]);
+        } else if (originalPosts[i].status && index === 2) {
+          newPosts.push(originalPosts[i]);
+        }
+      }
+      setPostData(newPosts);
+    }
   }
   return (
     <>
@@ -105,14 +121,18 @@ function Profile() {
       <div className={classes.box}>
         <h3 className={classes.title}>{userData?.username}</h3>
         <div className={classes.info}>
-          <img className={classes.imagePreview} src={url} alt={userData?.username}/>
-          <ul className={classes.details}>
-            <li>Username: {userData?.username}</li>
-            <li>Joined: {new Date(userData?.createdAt as Date).toLocaleDateString()}</li>
-            <li>Posts: {postData?.length}</li>
-          </ul>
+          <div className={classes.details}>
+            <img className={classes.imagePreview} src={url} alt={userData?.username}/>
+            <ul className={classes.list}>
+              <li>Username: {userData?.username}</li>
+              <li>Joined: {new Date(userData?.createdAt as Date).toLocaleDateString()}</li>
+              <li>Posts: {originalPosts?.length}</li>
+            </ul>
+          </div>
+          <div className={classes.buttons}>
+            <Button variant="success" size='sm' onClick={()=>navigate("/profile/edit")}>Edit account</Button>
+          </div>
         </div>
-        <Button variant="success" onClick={()=>navigate("/profile/edit")}>Edit account</Button>
       </div>
       
       <div className={classes.box}>
