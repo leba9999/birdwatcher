@@ -2,11 +2,12 @@
   "name": "birdwatcher",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
-    "start": "node src/index.ts",
+    "start": "node dist/src/index.js",
+    "build": "tsc",
     "dev": "concurrently \"nodemon src/index.ts \" \"cd client && npm start\"",
-    "test": "jest --detectOpenHandles --forceExit"
+    "test": "echo not implemented"
   },
   "repository": {
     "type": "git",
