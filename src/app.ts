@@ -19,6 +19,7 @@ import { shield } from "graphql-shield";
 import authenticate from "./api/functions/authenticate";
 import { MyContext } from "./interfaces/MyContext";
 import path from "path";
+import mime from "mime-types";
 
 const app = express();
 app.use(cors<cors.CorsRequest>());
@@ -92,7 +93,28 @@ app.use(express.json());
     app.get("/app/*", (req, res) => {
       res.sendFile(path.join(__dirname, "public", "index.html"));
     });
-    app.use("/app/*", express.static(path.join(__dirname, "public")));
+    app.use(
+      "/app",
+      express.static(path.join(__dirname, "public"), {
+        setHeaders: function (res, path) {
+          const mimeType = mime.lookup(path);
+          if (mimeType) {
+            res.setHeader("Content-Type", mimeType);
+          }
+        },
+      })
+    );
+    app.use(
+      "/app/*",
+      express.static(path.join(__dirname, "public"), {
+        setHeaders: function (res, path) {
+          const mimeType = mime.lookup(path);
+          if (mimeType) {
+            res.setHeader("Content-Type", mimeType);
+          }
+        },
+      })
+    );
     app.use(notFound);
     app.use(errorHandler);
   } catch (error) {
