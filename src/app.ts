@@ -90,7 +90,28 @@ app.use(express.json());
         },
       })
     );
-    app.get("/app/*", (req, res) => {
+    app.get("/app", (req, res) => {
+      res.sendFile(path.join(__dirname, "public", "index.html"));
+    });
+    app.get("/app/register", (req, res) => {
+      res.sendFile(path.join(__dirname, "public", "index.html"));
+    });
+    app.get("/app/profile", (req, res) => {
+      res.sendFile(path.join(__dirname, "public", "index.html"));
+    });
+    app.get("/app/profile/edit", (req, res) => {
+      res.sendFile(path.join(__dirname, "public", "index.html"));
+    });
+    app.get("/app/:id", (req, res) => {
+      res.sendFile(path.join(__dirname, "public", "index.html"));
+    });
+    app.get("/app/user/:id", (req, res) => {
+      res.sendFile(path.join(__dirname, "public", "index.html"));
+    });
+    app.get("/app/edit/:id", (req, res) => {
+      res.sendFile(path.join(__dirname, "public", "index.html"));
+    });
+    app.get("/app/new", (req, res) => {
       res.sendFile(path.join(__dirname, "public", "index.html"));
     });
     app.use(
@@ -104,17 +125,8 @@ app.use(express.json());
         },
       })
     );
-    app.use(
-      "/app/*",
-      express.static(path.join(__dirname, "public"), {
-        setHeaders: function (res, path) {
-          const mimeType = mime.lookup(path);
-          if (mimeType) {
-            res.setHeader("Content-Type", mimeType);
-          }
-        },
-      })
-    );
+    app.use("/app", express.static(path.join(__dirname, "public")));
+    app.use("/app", express.static(__dirname + "/public"));
     app.use(notFound);
     app.use(errorHandler);
   } catch (error) {
