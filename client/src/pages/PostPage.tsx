@@ -18,7 +18,7 @@ function PostPage() {
 
   useEffect(()=>{
     setLoading(true);
-    fetch('http://localhost:5000/graphql', {
+    fetch('https://sssf-birdwatcher.azurewebsites.net/graphql', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',

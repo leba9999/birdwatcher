@@ -18,7 +18,7 @@ function Home() {
 
   useEffect(()=>{
     setLoading(true);
-    fetch('http://localhost:5000/graphql', {
+    fetch('https://sssf-birdwatcher.azurewebsites.net/graphql', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
@@ -128,9 +128,9 @@ function Home() {
       }
       <div className={classes.box}>
         <div className={classes.filter}>
-          <button className={`${classes.tabButton} ${ activeIndex == 0 ? classes.active : ''}`} onClick={()=>handleTabClick(0)}>All</button>
-          <button className={`${classes.tabButton} ${ activeIndex == 1 ? classes.active : ''}`} onClick={()=>handleTabClick(1)}>Unresolved</button>
-          <button className={`${classes.tabButton} ${ activeIndex == 2 ? classes.active : ''}`} onClick={()=>handleTabClick(2)}>Resolved</button>
+          <button className={`${classes.tabButton} ${ activeIndex === 0 ? classes.active : ''}`} onClick={()=>handleTabClick(0)}>All</button>
+          <button className={`${classes.tabButton} ${ activeIndex === 1 ? classes.active : ''}`} onClick={()=>handleTabClick(1)}>Unresolved</button>
+          <button className={`${classes.tabButton} ${ activeIndex === 2 ? classes.active : ''}`} onClick={()=>handleTabClick(2)}>Resolved</button>
         </div>
         <div className={classes.order}>
           <button className={`${classes.tabButton} ${ !show ? classes.active : ''}`} onClick={()=>handleOrderClick(false)}>Newest</button>

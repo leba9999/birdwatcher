@@ -40,7 +40,7 @@ function EditProfile() {
   }
   useEffect(()=>{
     setLoading(true);
-    fetch('http://localhost:5000/graphql', {
+    fetch('https://sssf-birdwatcher.azurewebsites.net/graphql', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ function EditProfile() {
         setUserData(resJson);
         setEmail(resJson.email);
         if(resJson.filename !== "profile"){
-          const newFile = await createFileFromLink(`http://localhost:5000/uploads/${resJson.filename}`, resJson.filename as string);
+          const newFile = await createFileFromLink(`https://sssf-birdwatcher.azurewebsites.net/uploads/${resJson.filename}`, resJson.filename as string);
           setSelectedFile(newFile);
         }
       }
@@ -104,7 +104,7 @@ function EditProfile() {
           console.log(selectedFile.name)
           console.log(userData?.filename as string)
           formData.append('bird', selectedFile);
-          const uploadResponse = await fetch('http://localhost:5000/api/v1/upload', {
+          const uploadResponse = await fetch('https://sssf-birdwatcher.azurewebsites.net/api/v1/upload', {
               method: 'POST',
               headers: {
                   'Authorization':  `Bearer ${userFromContext?.user?.token}`,
@@ -122,7 +122,7 @@ function EditProfile() {
         if(password?.length !== 0){
           updatedUserData.password = password;
         }
-        fetch('http://localhost:5000/graphql', {
+        fetch('https://sssf-birdwatcher.azurewebsites.net/graphql', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -173,7 +173,7 @@ function EditProfile() {
       navigate(`/profile`);
   }
   function handleDelete(){
-    fetch('http://localhost:5000/graphql', {
+    fetch('https://sssf-birdwatcher.azurewebsites.net/graphql', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Post } from '../Interfaces/Post';
 import classes from './PostCard.module.css';
 import { Oval } from 'react-loader-spinner';
@@ -11,12 +11,12 @@ type Props = {
 function PostCard({ post } : Props ) {
     const [loading, setLoading] = useState(true);
     const imageRef = useRef<HTMLImageElement | null>(null);
-    const url = `http://localhost:5000/uploads/${post.filename}_medium.png`;
+    const url = `https://sssf-birdwatcher.azurewebsites.net/uploads/${post.filename}_medium.png`;
 
     function handleImageError(event : React.SyntheticEvent<HTMLImageElement, Event>){
         console.log(event);
         if(imageRef){
-            imageRef.current!.src = `http://localhost:5000/uploads/${post.filename}`;
+            imageRef.current!.src = `https://sssf-birdwatcher.azurewebsites.net/uploads/${post.filename}`;
         }
     }
 
@@ -24,7 +24,7 @@ function PostCard({ post } : Props ) {
     <div className={classes.box}>
         <Link className={classes.userlink} to={`/user/${post.owner.id}`}>
             <div className={classes.postedby}>
-                <img className={classes.profilePic} src={`http://localhost:5000/uploads/${post.owner.filename}_thumb.png`}/>
+                <img className={classes.profilePic} src={`https://sssf-birdwatcher.azurewebsites.net/uploads/${post.owner.filename}_thumb.png`}/>
                 {post.owner.username} {new Date(post.createdAt).toLocaleDateString()}
             </div>
         </Link>

@@ -3,11 +3,9 @@ import classes from './RegisterForm.module.css'
 import Form from 'react-bootstrap/Form';
 import {Button, Modal} from "react-bootstrap";
 import LoadingLayout from "./LoadingLayout";
-import {UserContext} from "../util/UserContext";
 import { useNavigate } from 'react-router-dom';
 
 const RegisterForm = () => {
-    const userFromContext = useContext(UserContext);
     const navigate = useNavigate(); 
 
     const [registerError, setRegisterError] = useState(false);
@@ -47,7 +45,7 @@ const RegisterForm = () => {
                 return;
             }
             if(username && password){
-                fetch('http://localhost:5000/graphql', {
+                fetch('https://sssf-birdwatcher.azurewebsites.net/graphql', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

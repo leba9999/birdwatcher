@@ -21,7 +21,7 @@ function Router() {
 
     
     function isAuthorizationValid() {
-        fetch(`http://localhost:5000/api/v1/users/token`, {
+        fetch(`https://sssf-birdwatcher.azurewebsites.net/api/v1/users/token`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${user?.token}`,
@@ -47,27 +47,25 @@ function Router() {
 
     return (
         <UserContext.Provider value={ {user, setUser} }>
-            <BrowserRouter>
-                {
-                    loading ? <LoadingLayout/> :
-                        authorized ?
-                            <Routes>
-                                <Route path="/" element={<App/>}>
-                                    <Route index element={<Home/>}/>
-                                    <Route path={"/:id"} element={<PostPage/>}/>
-                                    <Route path={"/profile"} element={<Profile/>}/>
-                                    <Route path={"/profile/edit"} element={<EditProfile/>}/>
-                                    <Route path={"/user/:id"} element={<UserPage/>}/>
-                                    <Route path={"/edit/:id"} element={<EditPost/>}/>
-                                    <Route path={"/new"} element={<NewPost/>}/>
-                                </Route>
-                            </Routes> :
-                            <Routes>
-                                <Route path="*" element={<Login/>}/>
-                                <Route path={"/register"} element={<Register/>}/>
-                            </Routes>
-                }
-            </BrowserRouter>
+        {
+            loading ? <LoadingLayout/> :
+                authorized ?
+                    <Routes>
+                        <Route path="*" element={<App/>}>
+                            <Route index element={<Home/>}/>
+                            <Route path={"/:id"} element={<PostPage/>}/>
+                            <Route path={"/profile"} element={<Profile/>}/>
+                            <Route path={"/profile/edit"} element={<EditProfile/>}/>
+                            <Route path={"/user/:id"} element={<UserPage/>}/>
+                            <Route path={"/edit/:id"} element={<EditPost/>}/>
+                            <Route path={"/new"} element={<NewPost/>}/>
+                        </Route>
+                    </Routes> :
+                    <Routes>
+                        <Route path="*" element={<Login/>}/>
+                        <Route path={"/register"} element={<Register/>}/>
+                    </Routes>
+        }
     </UserContext.Provider>
     );
   }

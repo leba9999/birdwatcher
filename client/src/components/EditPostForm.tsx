@@ -47,7 +47,7 @@ function EditPostForm({ post, reload } : Props) {
 
     useEffect(() => {
         (async ()=>{
-            const newFile = await createFileFromLink(`http://localhost:5000/uploads/${post.filename}`, post.filename as string);
+            const newFile = await createFileFromLink(`https://sssf-birdwatcher.azurewebsites.net/uploads/${post.filename}`, post.filename as string);
             setSelectedFile(newFile);
         })();
     }, []);
@@ -74,7 +74,7 @@ function EditPostForm({ post, reload } : Props) {
             if(selectedFile && !selectedFile.name.includes(updatedPost?.filename as string)){
                 const formData = new FormData();
                 formData.append('bird', selectedFile);
-                const uploadResponse = await fetch('http://localhost:5000/api/v1/upload', {
+                const uploadResponse = await fetch('https://sssf-birdwatcher.azurewebsites.net/api/v1/upload', {
                     method: 'POST',
                     headers: {
                         'Authorization':  `Bearer ${userFromContext?.user?.token}`,
@@ -92,7 +92,7 @@ function EditPostForm({ post, reload } : Props) {
             console.log(updatedPost);
 
             if(updatedPost){
-                fetch('http://localhost:5000/graphql', {
+                fetch('https://sssf-birdwatcher.azurewebsites.net/graphql', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -137,7 +137,7 @@ function EditPostForm({ post, reload } : Props) {
     }
 
     function handleDelete(){
-        fetch('http://localhost:5000/graphql', {
+        fetch('https://sssf-birdwatcher.azurewebsites.net/graphql', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

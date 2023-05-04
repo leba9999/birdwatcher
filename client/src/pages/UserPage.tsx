@@ -5,7 +5,6 @@ import { UserContext } from "../util/UserContext";
 import { User } from "../Interfaces/User";
 import { Post } from "../Interfaces/Post";
 import PostCard from "../components/PostCard";
-import { Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 
 function UserPage() {
@@ -25,7 +24,7 @@ function UserPage() {
 
   useEffect(()=>{
     setLoading(true);
-    fetch('http://localhost:5000/graphql', {
+    fetch('https://sssf-birdwatcher.azurewebsites.net/graphql', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
@@ -49,14 +48,14 @@ function UserPage() {
       if(resJson){
         console.log(resJson);
         setUserData(resJson);
-        setUrl(`http://localhost:5000/uploads/${resJson.filename}`);
+        setUrl(`https://sssf-birdwatcher.azurewebsites.net/uploads/${resJson.filename}`);
       }
     }).catch((error) => {
       console.error('Error:', error);
     }).finally(() => {
       setLoading(false);
     });
-    fetch('http://localhost:5000/graphql', {
+    fetch('https://sssf-birdwatcher.azurewebsites.net/graphql', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
@@ -137,9 +136,9 @@ function UserPage() {
       </div>
       
       <div className={classes.box}>
-          <button className={`${classes.tabButton} ${ activeIndex == 0 ? classes.active : ''}`} onClick={()=>handleTabClick(0)}>All</button>
-          <button className={`${classes.tabButton} ${ activeIndex == 1 ? classes.active : ''}`} onClick={()=>handleTabClick(1)}>Unresolved</button>
-          <button className={`${classes.tabButton} ${ activeIndex == 2 ? classes.active : ''}`} onClick={()=>handleTabClick(2)}>Resolved</button>
+          <button className={`${classes.tabButton} ${ activeIndex === 0 ? classes.active : ''}`} onClick={()=>handleTabClick(0)}>All</button>
+          <button className={`${classes.tabButton} ${ activeIndex === 1 ? classes.active : ''}`} onClick={()=>handleTabClick(1)}>Unresolved</button>
+          <button className={`${classes.tabButton} ${ activeIndex === 2 ? classes.active : ''}`} onClick={()=>handleTabClick(2)}>Resolved</button>
       </div>
       {
           postData?.map((post, index) => {

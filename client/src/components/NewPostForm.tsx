@@ -46,7 +46,7 @@ function NewPost() {
             try{
                 const formData = new FormData();
                 formData.append('bird', selectedFile);
-                const uploadResponse = await fetch('http://localhost:5000/api/v1/upload', {
+                const uploadResponse = await fetch('https://sssf-birdwatcher.azurewebsites.net/api/v1/upload', {
                     method: 'POST',
                     headers: {
                         'Authorization':  `Bearer ${userFromContext?.user?.token}`,
@@ -55,7 +55,7 @@ function NewPost() {
                 });
                 const uploadData = await uploadResponse.json() as unknown as UploadMessageResponse;
                 if(uploadData.data){
-                    fetch('http://localhost:5000/graphql', {
+                    fetch('https://sssf-birdwatcher.azurewebsites.net/graphql', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

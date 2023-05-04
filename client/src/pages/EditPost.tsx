@@ -4,6 +4,7 @@ import EditPostForm from '../components/EditPostForm';
 import classes from './Post.module.css';
 import { useParams } from 'react-router-dom';
 import { Post } from '../Interfaces/Post';
+import LoadingLayout from '../components/LoadingLayout';
 
 
 function EditPost() {
@@ -17,7 +18,7 @@ function EditPost() {
 
   useEffect(()=>{
     setLoading(true);
-    fetch('http://localhost:5000/graphql', {
+    fetch('https://sssf-birdwatcher.azurewebsites.net/graphql', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
@@ -54,12 +55,17 @@ function EditPost() {
     });
   },[reload])
     return (
+      <>
+        {
+            loading ? <LoadingLayout/> : null
+        }
         <div className={classes.box}>
         {
           post ?
           <EditPostForm post={post} reload={()=>setReload(!reload)}/> : null
         }
         </div>
+      </>
     );
 }
   

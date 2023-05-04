@@ -6,7 +6,7 @@ import LoadingLayout from "./LoadingLayout";
 import {UserContext} from "../util/UserContext";
 import { TokenUser } from '../Interfaces/User';
 import LoginMessageResponse from '../Interfaces/LoginMessageResponse';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
     const userFromContext = useContext(UserContext);
@@ -15,7 +15,6 @@ const LoginForm = () => {
     const [loginError, setLoginError] = useState(false);
     const [loading, setLoading] = useState(false);
     const [show, setShow] = useState(false);
-    const [data, setData] = useState(null);
 
     const [validated, setValidated] = useState(false);
     const formRef = useRef<HTMLFormElement | null>(null);
@@ -38,7 +37,7 @@ const LoginForm = () => {
             const username = usernameRef.current?.value;
             const password = passwordRef.current?.value;
             if(username && password){
-                fetch('http://localhost:5000/api/v1/auth/login', {
+                fetch('https://sssf-birdwatcher.azurewebsites.net/api/v1/auth/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -73,9 +72,6 @@ const LoginForm = () => {
 
     function handleClose(){
         setShow(false);
-    }
-    function handleShow(){
-        setShow(true);
     }
     return (
         <>

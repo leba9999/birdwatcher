@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { Post } from '../Interfaces/Post';
 import classes from './PostView.module.css';
 import { Oval } from 'react-loader-spinner';
@@ -48,7 +48,7 @@ function PostView({ post, reload } : Props ) {
                 post: post.id,
             };
 
-            fetch('http://localhost:5000/graphql', {
+            fetch('https://sssf-birdwatcher.azurewebsites.net/graphql', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ function PostView({ post, reload } : Props ) {
     <>
     <Link className={classes.link} to={`/user/${post.owner.id}`}>
         <div className={classes.postedby}>
-            <img className={classes.profilePic} src={`http://localhost:5000/uploads/${post.owner.filename}_thumb.png`}/>
+            <img className={classes.profilePic} src={`https://sssf-birdwatcher.azurewebsites.net/uploads/${post.owner.filename}_thumb.png`}/>
             {post.owner.username} {new Date(post.createdAt).toLocaleDateString()}
         </div>
     </Link>
@@ -112,7 +112,7 @@ function PostView({ post, reload } : Props ) {
             {post.title}
         </h3>
         <div className={classes.imageBox}>
-            <img className={classes.imagePreview} onLoadedData={()=>setLoading(false)} onLoad={()=>setLoading(false)} src={`http://localhost:5000/uploads/${post.filename}`} alt={post.filename}/>
+            <img className={classes.imagePreview} onLoadedData={()=>setLoading(false)} onLoad={()=>setLoading(false)} src={`https://sssf-birdwatcher.azurewebsites.net/uploads/${post.filename}`} alt={post.filename}/>
             {
                 loading ? <div className={classes.loading}>
                 <Oval

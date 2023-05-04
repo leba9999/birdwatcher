@@ -46,7 +46,7 @@ function PostComments({ comments, reload } : Props ) {
                 text: updatecommentText,
             };
 
-            fetch('http://localhost:5000/graphql', {
+            fetch('https://sssf-birdwatcher.azurewebsites.net/graphql', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ function PostComments({ comments, reload } : Props ) {
         }
     }
     async function handleCommentDelete(){
-        fetch('http://localhost:5000/graphql', {
+        fetch('https://sssf-birdwatcher.azurewebsites.net/graphql', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -131,7 +131,7 @@ function PostComments({ comments, reload } : Props ) {
                     <div className={classes.title}>
                         <Link className={classes.link} to={`/user/${comment.owner.id}`}>
                             <div className={classes.postedby}>
-                                <img className={classes.profilePic} src={`http://localhost:5000/uploads/${comment.owner.filename}_thumb.png`}/>
+                                <img className={classes.profilePic} src={`https://sssf-birdwatcher.azurewebsites.net/uploads/${comment.owner.filename}_thumb.png`}/>
                                 {comment.owner.username} {new Date(comment.createdAt).toLocaleDateString()}
                             </div>
                         </Link>
