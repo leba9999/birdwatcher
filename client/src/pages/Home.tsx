@@ -1,4 +1,4 @@
-import { ReactComponentElement, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import classes from './Home.module.css';
 import LoadingLayout from '../components/LoadingLayout';
 import { Post } from '../Interfaces/Post';
