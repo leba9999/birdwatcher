@@ -92,7 +92,7 @@ app.use(express.json());
     app.get("/app/*", (req, res) => {
       res.sendFile(path.join(__dirname, "public", "index.html"));
     });
-    app.use("/app", express.static(path.join(__dirname, "public")));
+    app.use("/app/*", express.static(path.join(__dirname, "public")));
     app.use(notFound);
     app.use(errorHandler);
   } catch (error) {
