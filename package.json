@@ -4,13 +4,13 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "start": "node dist/src/index.js",
-    "dev": "nodemon src/index.ts",
+    "start": "node dist/index.js",
     "build": "tsc",
+    "dev": "concurrently \"nodemon src/index.ts \" \"cd client && npm start\"",
+    "test": "echo not implemented",
     "copyGraphql": "copyfiles --error src/api/schemas/*.graphql dist",
     "postbuild": "npm run copyGraphql",
-    "lint": "eslint --fix src test",
-    "test": "echo not implemented"
+    "lint": "eslint --fix src test"
   },
   "repository": {
     "type": "git",
