@@ -91,6 +91,10 @@ app.use(express.json());
     app.get("/app/*", (req, res) => {
       res.sendFile(__dirname + "/public/index.html");
     });
+    app.get("/test/*", (req, res) => {
+      res.sendFile("./public/index.html");
+    });
+    app.get("/test2/*", express.static("./public"));
     app.use(notFound);
     app.use(errorHandler);
   } catch (error) {
