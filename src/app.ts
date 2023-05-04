@@ -88,7 +88,9 @@ app.use(express.json());
         },
       })
     );
-
+    app.get("/app/*", (req, res) => {
+      res.sendFile(__dirname + "/public/index.html");
+    });
     app.use(notFound);
     app.use(errorHandler);
   } catch (error) {
