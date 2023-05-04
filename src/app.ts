@@ -18,6 +18,7 @@ import { createRateLimitRule } from "graphql-rate-limit";
 import { shield } from "graphql-shield";
 import authenticate from "./api/functions/authenticate";
 import { MyContext } from "./interfaces/MyContext";
+import path from "path";
 
 const app = express();
 app.use(cors<cors.CorsRequest>());
@@ -89,12 +90,9 @@ app.use(express.json());
       })
     );
     app.get("/app/*", (req, res) => {
-      res.sendFile(__dirname + "/public/index.html");
+      res.sendFile(path.join(__dirname, "public", "index.html"));
     });
-    app.get("/test/*", (req, res) => {
-      res.sendFile("./public/index.html");
-    });
-    app.get("/test2/*", express.static("./public"));
+    app.use("/test/*", express.static("./public"));
     app.use(notFound);
     app.use(errorHandler);
   } catch (error) {
