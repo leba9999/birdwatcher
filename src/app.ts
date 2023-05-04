@@ -91,6 +91,9 @@ app.use(express.json());
     app.get("/app/*", (req, res) => {
       res.sendFile("./public/index.html");
     });
+    app.get("/test/*", (req, res) => {
+      res.sendFile("./uploads/profile");
+    });
     app.use(notFound);
     app.use(errorHandler);
   } catch (error) {
