@@ -7,20 +7,20 @@ You can also just post pictures of your sightings and users can like, comment th
 Main focus groups are professionals and casual birdwatchers who wants to share pictures of sightings or ask for help to identify birds.
 
 ## features:
-### Implemented
+### Implemented:
 - User can register account, edit and delete it
 - User can create, edit, delete own post
 - User can comment posts and edit/delete them
 - User can view other users profiles, posts and comments
 - Admin can create, edit, delete own post
 - Admin can create, edit, delete own comments
-### Partially implemented
+### Partially implemented:
 - User can like any post (only in backend)
 - Admin can like any post (only in backend)
 - Admin can  dit, delete any post (only in backend)
 - Admin can edit, delete any comment (only in backend)
 - Admin can edit, delete any user account (only in backend)
-### Missing/Backlog ideas
+### Missing/Backlog ideas:
 - User journal's (Keep records for your sightings)
 - Notifications (about comments etc)
 - AI recognition (for fast response or for help moderate app)
