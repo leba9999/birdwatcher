@@ -52,7 +52,7 @@ function Router() {
             loading ? <LoadingLayout/> :
                 authorized ?
                     <Routes>
-                        <Route path="*" element={<App/>}>
+                        <Route path="/" element={<App/>}>
                             <Route index element={<Home/>}/>
                             <Route path={"/:id"} element={<PostPage/>}/>
                             <Route path={"/profile"} element={<Profile/>}/>
