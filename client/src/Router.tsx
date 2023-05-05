@@ -47,8 +47,8 @@ function Router() {
 
     return (
         <UserContext.Provider value={ {user, setUser} }>
+        <BrowserRouter>
         {
-            <BrowserRouter>
             loading ? <LoadingLayout/> :
                 authorized ?
                     <Routes>
@@ -66,8 +66,8 @@ function Router() {
                         <Route path="*" element={<Login/>}/>
                         <Route path={"/register"} element={<Register/>}/>
                     </Routes>
-            </BrowserRouter>
         }
+        </BrowserRouter>
     </UserContext.Provider>
     );
   }
