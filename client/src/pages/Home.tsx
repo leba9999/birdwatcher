@@ -79,6 +79,7 @@ function Home() {
         }
       }
       setPosts(newPosts);
+      loadFunc(newPosts)
     }
   }
 
@@ -137,31 +138,14 @@ function Home() {
           <button className={`${classes.tabButton} ${ show ? classes.active : ''}`} onClick={()=>handleOrderClick(true)}>Oldest</button>
         </div>
       </div>
-      <>{posts.length <= 0 ? null :
-      <InfiniteScroll className={classes.events}
-                loadMore={()=>loadFunc(posts)}
-                hasMore={hasMore}
-                loader={
-                    <div key={0} className={classes.loading}>
-                        <p>Loading...</p>
-                        <Oval
-                            height={100}
-                            width={100}
-                            color="#9D16E0FF"
-                            wrapperStyle={{}}
-                            wrapperClass=""
-                            visible={true}
-                            ariaLabel='oval-loading'
-                            secondaryColor="#2d2d30"
-                            strokeWidth={4}
-                            strokeWidthSecondary={2}
-
-                        />
-                    </div>}
-            >
-                {items}
-            </InfiniteScroll> }
-      </>
+      
+      {
+          posts?.map((post, index) => {
+              return (
+                <PostCard post={post} key={index}/>
+              )
+            })
+        }
     </>
   );
 }
