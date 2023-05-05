@@ -90,31 +90,31 @@ app.use(express.json());
         },
       })
     );
-    app.get("/app/", (req, res) => {
+    app.get("/", (req, res) => {
       res.sendFile(path.join(__dirname, "public", "index.html"));
     });
     app.get("/app", (req, res) => {
       res.sendFile(path.join(__dirname, "public", "index.html"));
     });
-    app.get("/app/register", (req, res) => {
+    app.get("/register", (req, res) => {
       res.sendFile(path.join(__dirname, "public", "index.html"));
     });
-    app.get("/app/profile", (req, res) => {
+    app.get("/profile", (req, res) => {
       res.sendFile(path.join(__dirname, "public", "index.html"));
     });
-    app.get("/app/profile/edit", (req, res) => {
+    app.get("/profile/edit", (req, res) => {
       res.sendFile(path.join(__dirname, "public", "index.html"));
     });
-    app.get("/app/:id", (req, res) => {
+    app.get("/:id", (req, res) => {
       res.sendFile(path.join(__dirname, "public", "index.html"));
     });
-    app.get("/app/user/:id", (req, res) => {
+    app.get("/user/:id", (req, res) => {
       res.sendFile(path.join(__dirname, "public", "index.html"));
     });
-    app.get("/app/edit/:id", (req, res) => {
+    app.get("/edit/:id", (req, res) => {
       res.sendFile(path.join(__dirname, "public", "index.html"));
     });
-    app.get("/app/new", (req, res) => {
+    app.get("/new", (req, res) => {
       res.sendFile(path.join(__dirname, "public", "index.html"));
     });
     app.use(
